@@ -57,8 +57,24 @@ class Grid():
         """
         Checks is the current state of the grid is sorte and returns the answer as a boolean.
         """
-        # TODO: implement this function (and remove the line "raise NotImplementedError").
-        raise NotImplementedError
+        sorted=True
+        for i in range(0,self.m):
+            for j in range (0,self.n-1):
+                if self.state[i][j]<=self.state[i][j+1]:
+                    sorted=True
+                    continue
+                else:
+                    sorted=False
+                    break
+            if i!=self.m-1:
+                if self.state[i][self.n-1]<self.state[i+1][0]:
+                    sorted=True
+                    continue
+                else:
+                    sorted=False
+                    break
+        print(sorted)
+
 
     def swap(self, cell1, cell2):
         """
@@ -114,3 +130,7 @@ class Grid():
         return grid
 
 
+Grid.is_sorted(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in"))
+Grid.is_sorted(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid1.in"))
+Grid.is_sorted(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid2.in"))
+Grid.is_sorted(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid5.in"))
