@@ -85,8 +85,16 @@ class Grid():
         cell1, cell2: tuple[int]
             The two cells to swap. They must be in the format (i, j) where i is the line and j the column number of the cell. 
         """
-        # TODO: implement this function (and remove the line "raise NotImplementedError").
-        raise NotImplementedError
+        if (cell1[0]==cell2[0] and (cell1[1]==cell2[1]+1 or cell1[1]==cell2[1]-1)) or (cell1[1]==cell2[1] and (cell1[0]==cell2[0]+1 or cell1[0]==cell2[0]-1)):
+            a=cell1
+            b=cell2
+            cell1=b
+            cell2=a
+            print("La cellule 1 est",cell1,"et la cellule 2 est",cell2)
+        else:
+            print("Les cellules ne sont pas adjaçantes")
+        return (cell1,cell2)
+
 
     def swap_seq(self, cell_pair_list):
         """
@@ -134,3 +142,6 @@ Grid.is_sorted(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE
 Grid.is_sorted(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid1.in"))
 Grid.is_sorted(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid2.in"))
 Grid.is_sorted(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid5.in"))
+
+Grid.swap(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in"),(0,0),(0,1))
+Grid.swap(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in"),(0,0),(1,1))
