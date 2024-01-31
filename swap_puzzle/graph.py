@@ -99,15 +99,28 @@ class Graph:
         """ 
         file=[src] #création d'une file d'attente pour placer les noeuds à explorer. On y met le noeud source pour préparer première étape
         visited=[src]
+        previous_nodes={}
+        path=[dst]
         while len(file)>0: #algorithme va être exécuté tant qu'il reste des noeuds à traiter
             n=file.pop(0) #extraction du premier élément de la file d'attente (va permettre de traiter en largeur)
             if n==dst:
-                #à compléter
+                p=n
+                while p !=src:
+                    path.insert(0,previous_nodes[p])
+                    p=previous_nodes[p]
+                print (path)
+                return path
+                
             else:
                 for i in self.graph[n]: #ajoute les noeuds adjaçants
                     if i not in visited:
                         file.append(i) #on ajoute à la fin pour que toute une ligne soit d'abord traitée
                         visited.append(i)
+                        previous_nodes[i]=n
+        print(None)
+        return None
+        
+
 
 
         
@@ -144,3 +157,8 @@ class Graph:
                     raise Exception("Format incorrect")
         return graph
 
+Graph.bfs(Graph.graph_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\graph1.in"),2,1)
+Graph.bfs(Graph.graph_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\graph1.in"),3,2)
+Graph.bfs(Graph.graph_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\graph1.in"),4,1)
+Graph.bfs(Graph.graph_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\graph1.in"),5,1)
+Graph.bfs(Graph.graph_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\graph1.in"),7,3)
