@@ -113,6 +113,20 @@ class Grid():
             new_list.append(Grid.swap(self,k[0],k[1]))
         print (new_list)
         return(new_list)
+    
+    def node(self): 
+        """
+        Représentation d'une grille comme d'un noeud
+        tuple n'est pas mutable (noeud doit être hashable) mais il est ordonné donc on pourra représenter la grille de manière similaire à la représentation par la double liste state
+        tuple de tuple: chaque élément du grand tuple est une ligne
+        """
+        node=(tuple(tuple(self.state)[0]),tuple(tuple(self.state[1]))) #pb est qu'il faudrait le faire m fois
+        nodebis=tuple(self.state) #pour le moment, version la plus convaincante
+        return node, nodebis
+    
+    
+
+
 
 
     @classmethod
@@ -153,3 +167,6 @@ Grid.swap(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\
 Grid.swap(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in"),(0,0),(1,1))
 Grid.swap_seq(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in"),[((0,0),(0,1)),((1,0),(1,1))])
 Grid.swap_seq(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in"),[((0,0),(1,1)),((1,0),(1,1))])
+
+
+print (Grid.node(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in")))

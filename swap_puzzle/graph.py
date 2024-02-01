@@ -154,6 +154,7 @@ class Graph:
                     raise Exception("Format incorrect")
         return graph
 
+#Tests fct bfs
 for i in range(1,20):
     for j in range(i+1,21):
         print(i,j,len(Graph.bfs(Graph.graph_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\graph1.in"),i,j)),Graph.bfs(Graph.graph_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\graph1.in"),i,j))
