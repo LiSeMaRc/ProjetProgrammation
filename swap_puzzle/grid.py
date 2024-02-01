@@ -4,6 +4,8 @@ This is the grid module. It contains the Grid class and its associated methods.
 
 import random
 
+import itertools #pour permutations
+
 class Grid():
     """
     A class representing the grid from the swap puzzle. It supports rectangular grids. 
@@ -120,11 +122,28 @@ class Grid():
         tuple n'est pas mutable (noeud doit être hashable) mais il est ordonné donc on pourra représenter la grille de manière similaire à la représentation par la double liste state
         tuple de tuple: chaque élément du grand tuple est une ligne
         """
-        node=(tuple(tuple(self.state)[0]),tuple(tuple(self.state[1]))) #pb est qu'il faudrait le faire m fois
-        nodebis=tuple(self.state) #pour le moment, version la plus convaincante
-        return node, nodebis
+        
+        node_list=[]
+        for i in range (0,self.m):
+            for j in range(0,self.n):
+                node_list.append(self.state[i][j])
+        node_tuple=tuple(node_list)
+        return node_tuple
+        """autres essais au cas où on chercherait à faire des tuples de tuples
+        node=(tuple(tuple(self.state)[0]),tuple(tuple(self.state[1]))) pb est qu'il faudrait le faire m fois
+        nodebis=tuple(self.state) pour le moment, version la plus convaincante
+        """
     
-    
+    def permutations(self):
+        """Les différents états d'une grille peuvent s'obtenir 
+        en cherchant de combien de façons on peut ranger n*m éléments distincts.
+        On rappelle qu'on peut maintenant représenter grille comme un tuple"""
+        permutations=list(itertools.permutations(Grid.node(self)))
+        return permutations
+        
+
+
+
 
 
 
@@ -170,3 +189,4 @@ Grid.swap_seq(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\
 
 
 print (Grid.node(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in")))
+print (Grid.permutations(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in")))
