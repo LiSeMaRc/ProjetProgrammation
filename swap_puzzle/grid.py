@@ -249,6 +249,6 @@ class Grid():
 
 
 
-print (Grid.tuple((1,2,3,4,5,6,7,8),4,2))
+print (grid_from_tuple((1,2,3,4,5,6,7,8),4,2))
 
 print (Grid.resolution(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in")))
