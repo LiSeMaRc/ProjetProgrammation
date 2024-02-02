@@ -8,6 +8,19 @@ import itertools #pour permutations
 
 from graph import Graph #résolution par bfs
 
+
+
+def grid_from_tuple(t,n,m): #juste fonction pas méthode
+
+    if len(t)!=n*m:
+        print("Ce tuple ne peut pas représenter une grille")
+        return None 
+    else:
+        grid=[list(t[i:i+m] for i in range (0,len(t),m))]
+        return grid
+
+
+
 class Grid():
     """
     A class representing the grid from the swap puzzle. It supports rectangular grids. 
@@ -143,6 +156,8 @@ class Grid():
         node=(tuple(tuple(self.state)[0]),tuple(tuple(self.state[1]))) pb est qu'il faudrait le faire m fois
         nodebis=tuple(self.state) pour le moment, version la plus convaincante
         """
+
+
     
     def permutations(self):
         """Les différents états d'une grille peuvent s'obtenir 
@@ -161,7 +176,8 @@ class Grid():
             for i in range(0,self.m-1):#on enlève la dernière ligne
                 for j in range(1,self.n-1): #on enlève la première et la dernière colonne
                     adj[self.state[i][j]]=[self.state[i+1][j],self.state[i][j-1],self.state[i][j+1]]
-            #faire colonne 1, n-1 et ligne m-1 or sommets
+
+            #colonne 1, n-1 et ligne m-1 or sommets
             
             for i in range(1,self.m-2): #traitement de la première colonne
                 adj[self.state[i][0]]=[self.state[i-1][0],self.state[i+1][0],self.state[i][1]]
@@ -177,8 +193,8 @@ class Grid():
     def adj_grids(self):
         """Associe à une grille la liste des grilles pouvant être obtenues par un swap"""
         adj=[]
-        for i in Grid.adj_state(self): #on parcourt les clés du dictionnaire
-            for j in Grid.adj_state[i]: #on parcourt les éléments des listes de cases adjaçantes
+        for i in Grid.adj_state(self).keys(): #on parcourt les clés du dictionnaire
+            for j in Grid.adj_state(self)[i]: #on parcourt les éléments des listes de cases adjaçantes
                adj.append(Grid.swap(i,j))
                Grid.swap(i,j) #On réinitialise la grille pour le suivant
         return adj
@@ -189,16 +205,16 @@ class Grid():
         """
         Construction d'un graph de tous les états possibles de la grille pour appliquer l'algorithme bfs à la résolution du problème
         """
-        #Création d'une instance de la classe Graph avec le tuple représentant la grille à traiter
-        gr=Graph(Grid.permutations(self))
+        #Création d'une instance de la classe Graph avec la liste de noeuds composée des tuples représentant les différents états de la grille
+        g=Graph(self.permutations())
 
         #Ajout arêtes entre grilles adjaçantes, i.e. entre lesquelles on peut passer par un swap
-        for i in gr.nodes: #tuples
-            for j in Grid.adj_grids(i): #liste de tuples obtenue en appliquant la méthode adj_grids à un tuple. Or méthode prévue pour s'appliquer à une grille
-                gr.add_edge(i,j)
+        for i in g.nodes: #tuples
+            for j in self.adj_grids(grid_from_tuple(i,self.m,self.n)): #liste de tuples obtenue en appliquant la méthode adj_grids à un tuple. Or méthode prévue pour s'appliquer à une grille
+                g.add_edge(i,self.node(j)) #la méthode adj_grids retourne une liste de grilles (de states)
         
         #Application de l'algorithme bfs
-        return gr.bfs
+        return g.bfs
     
         
     
@@ -231,18 +247,8 @@ class Grid():
             grid = Grid(m, n, initial_state)
         return grid
 
-Grid.is_sorted(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in"))
-Grid.is_sorted(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid1.in"))
-Grid.is_sorted(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid2.in"))
-Grid.is_sorted(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid5.in"))
-
-Grid.swap(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in"),(0,0),(0,1))
-Grid.swap(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in"),(0,0),(1,1))
-Grid.swap_seq(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in"),[((0,0),(0,1)),((1,0),(1,1))])
-Grid.swap_seq(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in"),[((0,0),(1,1)),((1,0),(1,1))])
 
 
-print (Grid.node(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in")))
-print (Grid.permutations(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in")))
+print (Grid.tuple((1,2,3,4,5,6,7,8),4,2))
 
 print (Grid.resolution(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in")))
