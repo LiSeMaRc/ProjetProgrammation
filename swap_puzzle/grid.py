@@ -6,6 +6,8 @@ import random
 
 import itertools #pour permutations
 
+from graph import Graph #résolution par bfs
+
 class Grid():
     """
     A class representing the grid from the swap puzzle. It supports rectangular grids. 
@@ -88,14 +90,22 @@ class Grid():
             The two cells to swap. They must be in the format (i, j) where i is the line and j the column number of the cell. 
         """
         if (cell1[0]==cell2[0] and (cell1[1]==cell2[1]+1 or cell1[1]==cell2[1]-1)) or (cell1[1]==cell2[1] and (cell1[0]==cell2[0]+1 or cell1[0]==cell2[0]-1)):
+            """
             a=cell1
             b=cell2
             cell1=b
             cell2=a
             print("La cellule 1 est",cell1,"et la cellule 2 est",cell2)
             return (cell1,cell2)
+            """
+            
+            a=self.state[cell1[0]]
+            b=self.state[cell1[1]]
+            self.state[cell1[0]]=b
+            self.state[cell1[1]]=a
+            return self.state
+                
         else:
-            print("Les cellules ne sont pas adjaçantes")
             return None
         
 
@@ -140,13 +150,58 @@ class Grid():
         On rappelle qu'on peut maintenant représenter grille comme un tuple"""
         permutations=list(itertools.permutations(Grid.node(self)))
         return permutations
+
+    def adj_state(self):
+        """Construction d'un dictionnaire qui à chaque coef associe les coef avec lesquels on peut faire de swaps """
+        adj={self.state[0][0]:[self.state[0][1],self.state[1][0]],
+               self.state[0][self.n-1]:[self.state[1][self.n-1],self.state[0][self.n-2]],
+               self.state[self.m-1][self.n-1]:[self.state[self.m-2][self.n-1],self.state[self.m-1][self.n-2]],
+               self.state[self.m-1][0]:[self.state[self.m-1][1],self.state[self.m-2][0]]} #traitement des coins de la grille
+        if self.n>2 or self.m>2:
+            for i in range(0,self.m-1):#on enlève la dernière ligne
+                for j in range(1,self.n-1): #on enlève la première et la dernière colonne
+                    adj[self.state[i][j]]=[self.state[i+1][j],self.state[i][j-1],self.state[i][j+1]]
+            #faire colonne 1, n-1 et ligne m-1 or sommets
+            
+            for i in range(1,self.m-2): #traitement de la première colonne
+                adj[self.state[i][0]]=[self.state[i-1][0],self.state[i+1][0],self.state[i][1]]
+
+            for i in range(1,self.m-2): #traitement de la dernière colonne
+                adj[self.state[i][self.n-1]]=[self.state[i-1][self.n-1],self.state[i+1][self.n-1],self.state[i][self.n-2]]
+            
+            for j in range(1,self.n-2):
+                adj[self.state[self.m-1][j]]=[self.state[self.m-1][j-1],self.state[self.m-1][j+1],self.state[self.m-2][j]]
+            
+        return adj
+    
+    def adj_grids(self):
+        """Associe à une grille la liste des grilles pouvant être obtenues par un swap"""
+        adj=[]
+        for i in Grid.adj_state(self): #on parcourt les clés du dictionnaire
+            for j in Grid.adj_state[i]: #on parcourt les éléments des listes de cases adjaçantes
+               adj.append(Grid.swap(i,j))
+               Grid.swap(i,j) #On réinitialise la grille pour le suivant
+        return adj
+
+      
         
+    def resolution(self):
+        """
+        Construction d'un graph de tous les états possibles de la grille pour appliquer l'algorithme bfs à la résolution du problème
+        """
+        #Création d'une instance de la classe Graph avec le tuple représentant la grille à traiter
+        gr=Graph(Grid.permutations(self))
 
-
-
-
-
-
+        #Ajout arêtes entre grilles adjaçantes, i.e. entre lesquelles on peut passer par un swap
+        for i in gr.nodes: #tuples
+            for j in Grid.adj_grids(i): #liste de tuples obtenue en appliquant la méthode adj_grids à un tuple. Or méthode prévue pour s'appliquer à une grille
+                gr.add_edge(i,j)
+        
+        #Application de l'algorithme bfs
+        return gr.bfs
+    
+        
+    
 
     @classmethod
     def grid_from_file(cls, file_name): 
@@ -176,7 +231,6 @@ class Grid():
             grid = Grid(m, n, initial_state)
         return grid
 
-
 Grid.is_sorted(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in"))
 Grid.is_sorted(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid1.in"))
 Grid.is_sorted(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid2.in"))
@@ -190,3 +244,5 @@ Grid.swap_seq(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\
 
 print (Grid.node(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in")))
 print (Grid.permutations(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in")))
+
+print (Grid.resolution(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in")))
