@@ -8,6 +8,8 @@ import itertools #pour permutations
 
 from graph import Graph #résolution par bfs
 
+import copy
+
 
 
 def grid_from_tuple(t,n,m): #juste fonction pas méthode
@@ -112,10 +114,10 @@ class Grid():
             return (cell1,cell2)
             """
             
-            a=self.state[cell1[0]]
-            b=self.state[cell1[1]]
-            self.state[cell1[0]]=b
-            self.state[cell1[1]]=a
+            a=self.state[cell1[0]][cell1[1]]
+            b=self.state[cell2[0]][cell2[1]]
+            self.state[cell1[0]][cell1[1]]=b
+            self.state[cell2[0]][cell2[1]]=a
             return self.state
                 
         else:
@@ -168,7 +170,28 @@ class Grid():
 
     def adj_state(self):
         """Construction d'un dictionnaire qui à chaque coef associe les coef avec lesquels on peut faire de swaps """
-        adj={self.state[0][0]:[self.state[0][1],self.state[1][0]],
+        adj={self.state[0][0]:[(0,1),(1,0)],
+               self.state[0][self.n-1]:[(1,self.n-1),(0,self.n-2)],
+               self.state[self.m-1][self.n-1]:[(self.m-2,self.n-1),(self.m-1,self.n-2)],
+               self.state[self.m-1][0]:[(self.m-1,1),(self.m-2,0)]} #traitement des coins de la grille
+        if self.n>2 or self.m>2:
+            for i in range(0,self.m-1):#on enlève la dernière ligne
+                for j in range(1,self.n-1): #on enlève la première et la dernière colonne
+                    adj[self.state[i][j]]=[(i+1,j),(i,j-1),(i,j+1)]
+
+            #colonne 1, n-1 et ligne m-1 or sommets
+            
+            for i in range(1,self.m-2): #traitement de la première colonne
+                adj[self.state[i][0]]=[(i-1,0),(i+1,0),(i,1)]
+
+            for i in range(1,self.m-2): #traitement de la dernière colonne
+                adj[self.state[i][self.n-1]]=[(i-1,self.n-1),(i+1,self.n-1),(i,self.n-2)]
+            
+            for j in range(1,self.n-2):
+                adj[self.state[self.m-1][j]]=[(self.m-1,j-1),(self.m-1,j+1),(self.m-2,j)]
+            
+        return adj
+    """adj={self.state[0][0]:[self.state[0][1],self.state[1][0]],
                self.state[0][self.n-1]:[self.state[1][self.n-1],self.state[0][self.n-2]],
                self.state[self.m-1][self.n-1]:[self.state[self.m-2][self.n-1],self.state[self.m-1][self.n-2]],
                self.state[self.m-1][0]:[self.state[self.m-1][1],self.state[self.m-2][0]]} #traitement des coins de la grille
@@ -188,17 +211,26 @@ class Grid():
             for j in range(1,self.n-2):
                 adj[self.state[self.m-1][j]]=[self.state[self.m-1][j-1],self.state[self.m-1][j+1],self.state[self.m-2][j]]
             
-        return adj
+        return adj"""
+    #dico corrigé pour prendre en compte le format des arguments de la méthode swap
     
     def adj_grids(self):
         """Associe à une grille la liste des grilles pouvant être obtenues par un swap"""
+        """
         adj=[]
-        for i in Grid.adj_state(self).keys(): #on parcourt les clés du dictionnaire
+        for i in list(Grid.adj_state(self).keys()): #on parcourt les clés du dictionnaire
             for j in Grid.adj_state(self)[i]: #on parcourt les éléments des listes de cases adjaçantes
-               adj.append(Grid.swap(i,j))
-               Grid.swap(i,j) #On réinitialise la grille pour le suivant
+               adj.append(Grid.swap(self,i,j))
+               Grid.swap(self,i,j) #On réinitialise la grille pour le suivant
         return adj
-
+        """
+        adj=[]
+        for i in range(0,self.m-1):
+            for j in range(0,self.n-1): #vérifier cette histoire d'index out of range
+                for k in Grid.adj_state(self)[self.state[i][j]]:
+                    gridbis=copy.deepcopy(self)
+                    adj.append(Grid.swap(gridbis,(i,j),k)) 
+        return adj
       
         
     def resolution(self):
@@ -206,11 +238,13 @@ class Grid():
         Construction d'un graph de tous les états possibles de la grille pour appliquer l'algorithme bfs à la résolution du problème
         """
         #Création d'une instance de la classe Graph avec la liste de noeuds composée des tuples représentant les différents états de la grille
-        g=Graph(self.permutations())
+        g=Graph(Grid.permutations(self))
 
         #Ajout arêtes entre grilles adjaçantes, i.e. entre lesquelles on peut passer par un swap
         for i in g.nodes: #tuples
-            for j in self.adj_grids(grid_from_tuple(i,self.m,self.n)): #liste de tuples obtenue en appliquant la méthode adj_grids à un tuple. Or méthode prévue pour s'appliquer à une grille
+            grid=Grid(self.m,self.n,grid_from_tuple(i,self.m,self.n))
+            list_grid=Grid.adj_grids(grid)
+            for j in list_grid: #adj_grids est méthode qui s'applique à une grille. Or ne semble par reconnaître k comme grille
                 g.add_edge(i,self.node(j)) #la méthode adj_grids retourne une liste de grilles (de states)
         
         #Application de l'algorithme bfs
@@ -248,7 +282,10 @@ class Grid():
         return grid
 
 
+print(Grid.swap(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in"),(0,0),(0,1)))
 
-print (grid_from_tuple((1,2,3,4,5,6,7,8),4,2))
+print(Grid.adj_state(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in")))
 
-print (Grid.resolution(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in")))
+print(Grid.adj_grids(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in")))
+
+print(Grid.resolution(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in")))
