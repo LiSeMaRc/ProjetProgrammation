@@ -248,7 +248,7 @@ class Grid():
                 g.add_edge(i,self.node(j)) #la méthode adj_grids retourne une liste de grilles (de states)
         
         #Application de l'algorithme bfs
-        return g.bfs
+        return g.bfs(Grid.node(self),tuple(range(1,self.n*self.m+1)))
     
         
     

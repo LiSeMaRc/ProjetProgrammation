@@ -118,7 +118,7 @@ class Graph:
         return None
         
 
-
+#ce que est prometteur, c'est les noeuds où tuple[i]==i+1
 
         
 
