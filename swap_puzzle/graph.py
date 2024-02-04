@@ -120,7 +120,6 @@ class Graph:
 
 #ce que est prometteur, c'est les noeuds où tuple[i]==i+1
 
-        
 
     @classmethod
     def graph_from_file(cls, file_name):

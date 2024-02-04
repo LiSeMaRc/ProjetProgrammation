@@ -231,8 +231,8 @@ class Grid():
                     gridbis=copy.deepcopy(self)
                     adj.append(Grid.swap(gridbis,(i,j),k)) 
         return adj
-      
-        
+
+    
     def resolution(self):
         """
         Construction d'un graph de tous les états possibles de la grille pour appliquer l'algorithme bfs à la résolution du problème
@@ -249,6 +249,31 @@ class Grid():
         
         #Application de l'algorithme bfs
         return g.bfs(Grid.node(self),tuple(range(1,self.n*self.m+1)))
+
+def resolution_short(self):
+    list_nodes=[Grid.node(self)] #noeuds à traiter sous forme de tuple
+    initialisation=[Grid.node(self)] #liste des noeuds avec lesquels créer le graph
+    while tuple(range(1,self.n*self.m+1)) not in list_nodes: #on s'arrêtera quand on aura trouvé la grille rangée (is_sorted?)
+        while len(list_nodes)>0:
+            for k in list_nodes: #sûrement pb 
+                for j in Grid.adj_grids(k): #parmi les grilles adjaçantes au noeud à traiter
+                    initialisation.append(Grid.node(j)) #on l'ajoute à la liste des noeuds utiles pour le graph sous forme de tuple
+                    list_nodes.append(Grid.node(j)) #on l'ajoute à la liste des noeuds à traiter
+             #plein de pbs
+    
+        #Création d'une instance de la classe Graph avec la liste de noeuds utiles
+        g=Graph(initialisation)
+
+        #Ajout arêtes entre grilles adjaçantes, i.e. entre lesquelles on peut passer par un swap
+        for i in g.nodes: #tuples
+            grid=Grid(self.m,self.n,grid_from_tuple(i,self.m,self.n))
+            list_grid=Grid.adj_grids(grid)
+            for j in list_grid: #adj_grids est méthode qui s'applique à une grille. Or ne semble par reconnaître k comme grille
+                g.add_edge(i,self.node(j)) #la méthode adj_grids retourne une liste de grilles (de states)
+        
+        #Application de l'algorithme bfs
+    return g.bfs(Grid.node(self),tuple(range(1,self.n*self.m+1)))
+
     
         
     
@@ -281,8 +306,11 @@ class Grid():
             grid = Grid(m, n, initial_state)
         return grid
 
+def resolution_short(self):
 
-print(Grid.swap(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in"),(0,0),(0,1)))
+
+
+    Grid.swap(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in"),(0,0),(0,1))
 
 print(Grid.adj_state(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in")))
 
