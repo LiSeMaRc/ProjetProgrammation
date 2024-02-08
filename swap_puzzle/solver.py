@@ -1,4 +1,5 @@
 from grid import Grid
+import numpy as np 
 
 class Solver(): 
     """
@@ -20,9 +21,10 @@ class Solver():
         for m_i in range(0,self.m): 
             for n_i in range(0,self.n):
                 i = self.state(m_i, n_i)
-                if (m_i,n_i) == ((i-1)/, (i-1)%3):
+                if (m_i,n_i) == (np.floor((i-1)/self.n), (i-1)%(self.n)):
                     i = i
                 elif (i-1)%3 - n_i < 0 :
-                    self.swap(
+                    for j in range (1, n_i+1) : 
+                        self.swap(self, 
                 
 
