@@ -97,29 +97,34 @@ class Graph:
         path: list[NodeType] | None
             The shortest path from src to dst. Returns None if dst is not reachable from src
         """ 
-        file=[src] #création d'une file d'attente pour placer les noeuds à explorer. On y met le noeud source pour préparer première étape
+        #Creates a queue to place the nodes to be explored. We place the source node in it to prepare the first step
+        file=[src] 
+
+        #Creates a list of already visited nodes.
         visited=[src]
+
+        #Creates a dictionary that associates a node with the previous nodes
         previous_nodes={}
+
+        #Creates a list giving the shortest path from node src to node dst. Last element will therefore be dst.
         path=[dst] 
-        while len(file)>0: #algorithme va être exécuté tant qu'il reste des noeuds à traiter
-            n=file.pop(0) #extraction du premier élément de la file d'attente (va permettre de traiter en largeur)
-            if n==dst:
+
+        while len(file)>0: #algorithm will be executed as long as there are nodes to process
+            n=file.pop(0) #extraction of the first item from the queue (this will allow processing to be done in width)
+            if n==dst: #Case where dst reached: finds the path that led to it
                 p=n
                 while p !=src:
                     path.insert(0,previous_nodes[p])
                     p=previous_nodes[p]
                 return path  
             else:
-                for i in self.graph[n]: #ajoute les noeuds adjaçants
+                for i in self.graph[n]: #adds adjoining nodes
                     if i not in visited:
-                        file.append(i) #on ajoute à la fin pour que toute une ligne soit d'abord traitée
+                        file.append(i) #added at the end so that an entire line is processed first
                         visited.append(i)
                         previous_nodes[i]=n
         return None
         
-
-#ce que est prometteur, c'est les noeuds où tuple[i]==i+1
-
 
     @classmethod
     def graph_from_file(cls, file_name):
@@ -153,5 +158,5 @@ class Graph:
                     raise Exception("Format incorrect")
         return graph
 
-#Tests fct bfs
+
 
