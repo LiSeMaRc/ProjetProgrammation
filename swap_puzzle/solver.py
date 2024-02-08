@@ -45,7 +45,7 @@ class Solver():
                         l = m_i + k
                     Grid.swap_seq(R)
                 T.append(L+R)
-            return(T)
+            return(T) #Returns a list of all the swaps made in order to rearrange the Grid 
                 
             
                 
