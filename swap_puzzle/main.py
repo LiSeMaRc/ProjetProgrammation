@@ -1,16 +1,10 @@
-##Question 7:
+#Imports
+from graph import Graph
 from grid import Grid
 
-g = Grid(2, 3)
-print(g.swap((0,0),(0,1)))
-g.swap(((1,2),(1,0)))
-print(g.resolution)
+#Tests
 
-"""
-data_path = "../input/"
-file_name = data_path + "grid0.in"
+print("Question 7",Grid.resolution(Grid.grid_from_file("input\\grid0.in")))
 
-print(file_name)
-g = Grid.grid_from_file(file_name)
-print(g)
-"""
+print("Question 8",Grid.resolution_short(Grid.grid_from_file("input\\grid0.in")))
+
