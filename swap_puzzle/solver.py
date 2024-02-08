@@ -15,16 +15,30 @@ class Solver():
         # NOTE: you can add other methods and subclasses as much as necessary. The only thing imposed is the format of the solution returned.
         raise NotImplementedError
         for i in range(1, (self.m)*(self.n) +1) : 
-            coordonnees_i = (np.(floor((i-1)/(self.n))), (i-1)%(self.n)) #définit les coordonnées où i devrait se trouver 
+            coordinates_i = (np.(floor((i-1)/(self.n))), (i-1)%(self.n)) #Defines i's coordinates 
        
-        #On fait une double boucle pour déplacer les chiffres 
-        for m_i in range(0,self.m): 
-            for n_i in range(0,self.n):
-                i = self.state(m_i, n_i)
-                if (m_i,n_i) == (np.floor((i-1)/self.n), (i-1)%(self.n)):
-                    i = i
-                elif (i-1)%3 - n_i < 0 :
-                    for j in range (1, n_i+1) : 
-                        self.swap(self, 
+        #Creating a double loop to move i into the right column and then to the right row 
+            for m_i in range(0,self.m + 1 ): 
+                for n_i in range(0,self.n + 1):
+                    i = self.state(m_i, n_i)
+                    if (m_i,n_i) == (np.floor((i-1)/self.n), (i-1)%(self.n)):
+                        i = i
+                    elif (i-1)%(self.n) - n_i < 0 :
+                        L = [] #Creates an empty list
+                        for j in range (1,abs((i-1)%(self.n) - n_i)) : 
+                            L.append(((m_i,n_i),(m_i,n_i-j))) #Adding the swaps needed to get i to the right column
+                        Grid.swap_seq(L)
+                    elif (i-1)%(self.n) - n_i > 0: 
+                        for j in range(1,abs((i-1)%(self.n) - n_i)):
+                            L.append(((m_i,n_i),(m_i,n_i+j)))
+                        Grid.swap_seq(L)
+                if m_i = np.(floor((i-1)/(self.n)):
+                    i = i 
+                else :
+                    for k in range(1, abs(
+                
+                
+            
+                    
                 
 
