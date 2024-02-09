@@ -6,6 +6,7 @@ from solver import Solver
 #TESTS
 
 #Question 2: is_sorted et swaps
+"""
 print("Question 2, sorted, grid1",Grid.is_sorted(Grid.grid_from_file("input\\grid1.in")))
 print("Question 2, sorted, grid2",Grid.is_sorted(Grid.grid_from_file("input\\grid2.in")))
 print("Question 2, sorted, grid5",Grid.is_sorted(Grid.grid_from_file("input\\grid5.in")))
@@ -17,10 +18,13 @@ print("Question 2, swap, grid1",Grid.swap(Grid.grid_from_file("input\\grid1.in")
 
 #Grid.swap_seq(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in"),[((0,0),(0,1)),((1,0),(1,1))])
 #Grid.swap_seq(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in"),[((0,0),(1,1)),((1,0),(1,1))])
-
+"""
 #Question 3
-#print("Question 3, grid0",Solver.get_solution(Grid.grid_from_file("input\\grid0.in")))
-
+print("Question 3, grid0",Solver.get_solution(Grid.grid_from_file("input\\grid0.in")))
+print("Question 3, grid1",Solver.get_solution(Grid.grid_from_file("input\\grid1.in")))
+print("Question 3, grid2",Solver.get_solution(Grid.grid_from_file("input\\grid2.in")))
+print("Question 3, grid3",Solver.get_solution(Grid.grid_from_file("input\\grid3.in")))
+"""
 #Question 4:
 print("Question 4,grid0",Grid.graphic_representation(Grid.grid_from_file("input\\grid0.in")))
 print("Question 4,grid1",Grid.graphic_representation(Grid.grid_from_file("input\\grid1.in")))
@@ -41,3 +45,4 @@ print("Question 7, grid1",Grid.resolution(Grid.grid_from_file("input\\grid1.in")
 print("Question 8, grid0",Grid.resolution_short(Grid.grid_from_file("input\\grid0.in")))
 print("Question 8, grid1",Grid.resolution_short(Grid.grid_from_file("input\\grid0.in")))
 
+"""

@@ -12,7 +12,7 @@ import copy
 
 from graph import Graph 
 
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 
 
 #Functions
