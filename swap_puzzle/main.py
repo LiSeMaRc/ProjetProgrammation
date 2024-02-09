@@ -1,6 +1,7 @@
 #Imports
 from graph import Graph
 from grid import Grid
+from solver import Solver
 
 #TESTS
 
@@ -16,6 +17,9 @@ print("Question 2, swap, grid1",Grid.swap(Grid.grid_from_file("input\\grid1.in")
 
 #Grid.swap_seq(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in"),[((0,0),(0,1)),((1,0),(1,1))])
 #Grid.swap_seq(Grid.grid_from_file("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\grid0.in"),[((0,0),(1,1)),((1,0),(1,1))])
+
+#Question 3
+print("Question 3, grid0",Solver.get_solution(Grid.grid_from_file("input\\grid0.in")))
 
 
 #Question 5: bfs first version

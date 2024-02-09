@@ -136,10 +136,9 @@ class Grid():
             List of swaps, each swap being a tuple of two cells (each cell being a tuple of integers). 
             So the format should be [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...].
         """
-        new_list=[]
         for k in cell_pair_list:
-            new_list.append(Grid.swap(self,k[0],k[1]))
-        return(new_list) #return self.state
+            Grid.swap(self,k[0],k[1])
+        
     
     def node(self): 
         """
@@ -181,6 +180,7 @@ class Grid():
                 if j!=self.n-1: #special case last column: no column after
                     adj[(i,j)].append(((i,j+1)))
         return adj
+    #Complexity: nm
 
     
     def adj_grids(self):
@@ -196,7 +196,7 @@ class Grid():
                 adj.append(Grid(self.m,self.n,copy.deepcopy(self.state)))
                 self.swap(k,l)
         return adj
-
+    #Complexity: nm
     
     def resolution(self):
         """
@@ -204,7 +204,7 @@ class Grid():
         Returns a list of necessary swaps.
         """
         #Creation of an instance of the Graph class with the list of nodes made up of tuples representing the different states of the grid.
-        g=Graph(Grid.permutations(self))
+        g=Graph(Grid.permutations(self)) #Complexity: (nm)!
 
         #Addition of edges between adjoining grids, i.e. between grids separated by one swap only
         for i in g.nodes: 
@@ -231,7 +231,7 @@ class Grid():
                         else:
                             list_swap.append(((a,b),(k,l)))
         return list_swap
-
+    #Complexity: (nm)!(nm)^2
 
     def resolution_short(self):
         """
