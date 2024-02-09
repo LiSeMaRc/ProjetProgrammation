@@ -12,6 +12,9 @@ import copy
 
 from graph import Graph 
 
+import matplotlib.pyplot as plt
+
+
 #Functions
 
 def grid_from_tuple(t,n,m): 
@@ -138,7 +141,17 @@ class Grid():
         """
         for k in cell_pair_list:
             Grid.swap(self,k[0],k[1])
-        
+    
+    def graphic_representation(self):
+        """
+        Gives a graphic representation of the grid.
+        """
+        grid=self.state
+        fig, ax=plt.subplots()
+        ax.set_axis_off()
+        ax.table(cellText=grid,cellLoc ='center')
+        plt.show()
+
     
     def node(self): 
         """
