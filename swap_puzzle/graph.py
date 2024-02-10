@@ -1,5 +1,5 @@
 """
-This is the graph module. It contains a minimalistic Graph class.
+This is the graph module. 
 """
 
 class Graph:

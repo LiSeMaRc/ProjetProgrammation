@@ -15,15 +15,12 @@ class Solver(Grid):
         list_swap=[]
         for k in range(1,self.m*self.n+1):
             row=(k-1)//self.n
-            print("row",k,row)
             column=(k-1)%self.n
-            print("column",k,column)
             for i in range(self.m):
                 for j in range(self.n):
                     if self.state[i][j]==k:
                         if i<row:
                             for l in range(i,row):
-                                print("l",l)
                                 list_swap.append(((l,j),(l+1,j)))
                                 self.swap((l,j),(l+1,j))
                         if i>row:
