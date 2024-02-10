@@ -37,6 +37,7 @@ class Solver(Grid):
                                 self.swap((i,l),(i,l-1))
         print(self.state)
         return list_swap
+    #Complexity: (m*n)^2(m+n)
     
                         
                             
