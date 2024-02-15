@@ -2,6 +2,7 @@
 This is the graph module. 
 """
 
+
 class Graph:
     """
     A class representing undirected graphs as adjacency lists. 

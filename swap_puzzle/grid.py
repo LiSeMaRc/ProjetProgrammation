@@ -14,6 +14,10 @@ from graph import Graph
 
 import matplotlib.pyplot as plt
 
+import math
+
+import heapq
+
 
 #Functions
 
@@ -287,6 +291,127 @@ class Grid():
                         visited.append(i)
                         previous_nodes[i]=n
         return None
+    
+    def heuristic(self,node1,node2): #en faire une méthode statique?
+        """
+        Parameters:
+        ---
+        node1: node1 is a tuple
+        node2: node2 is a tuple
+        """
+
+        #Création de deux objets grilles pour accéder à l'attribut state
+        grid1=Grid(self.m,self.n,grid_from_tuple(node1,self.m,self.n))
+        grid2=Grid(self.m,self.n,grid_from_tuple(node2,self.m,self.n))
+
+        #Parcours de toutes les cellules des grilles par leur contenu
+        for k in range (1,self.m*self.n+1):
+            counter_swap=0
+
+        #Parcours de toutes les cellules des grilles par leurs coordonnées 
+            for i in range (self.m):
+                for j in range (self.n):
+
+        #Stockage des coordonnées de k dans grid1 sous m1 et n1
+                    if grid1.state[i][j]==k:
+                        m1=i
+                        n1=j
+        #Stockage des coordonnées de k dans grid2 sous m2 et n2            
+                    if grid2.state[i][j]==k:
+                        m2=i
+                        n2=j
+            counter_swap=counter_swap+abs(m2-m1)+abs(n2-n1)
+        counter_swap=math.sqrt(counter_swap)
+        return counter_swap
+        
+    
+    def a_star(self):
+        """
+        src, dst sous forme de tuples
+        """
+        src=self.node()
+        dst=tuple(range(1,self.n*self.m+1))
+        #List composée de tuples (coût, noeud sous forme de tuple)
+        
+        open_list=[(self.heuristic(src,dst),src)]
+        #On modifie la liste pour trier par coût croissant
+        heapq.heapify(open_list)
+
+        #Liste des noeuds visités sous forme de tuple
+        closed_list=[]
+
+        #Dictionnaire qui à chaque noeud sous forme de tuple associe son coût
+        cost={src:self.heuristic(src,dst)}
+
+        #Dictionnaire qui à chaque noeud associe noeud précédent
+        previous_nodes={}
+
+        #Liste des noeuds parcourus dans chemin optimal
+        path=[dst]
+
+        while len(open_list)>0:
+            c,n=heapq.heappop(open_list) #premier élément de la liste, c=coût, n=node sous forme de tuple
+            if n==dst: #tuples
+                p=n
+                while p !=src:
+                    path.insert(0,previous_nodes[p])
+                    p=previous_nodes[p]
+                print(path) 
+                list=path
+                list_swap=[]
+         
+                for i in range (len(list)-1):
+                    (a,b)=(-1,-1)
+                    for k in range(0,self.m):
+                        for l in range(0,self.n):
+                            if list[i][k*self.n+l]!=list[i+1][k*self.n+l]:
+                                if(a,b)==(-1,-1):
+                                    (a,b)=(k,l)
+                                else:
+                                    list_swap.append(((a,b),(k,l)))
+                return list_swap
+            else:
+              for i in Grid.adj_grids(Grid(self.m,self.n,grid_from_tuple(n,self.m,self.n))): #adj_grids s'applique à une grille
+                  node=i.node() #on retransforme grille en tuple
+                  #Actualisation du dictionnaire avec previous_nodes
+                  previous_nodes[node]=n
+
+                  #calcul du coût (nb de swaps) entre noeud source et noeud actuel (chaque noeud étant séparé par un swap)
+                  real_cost=0
+                  p=node
+                  while p!=src:
+                    real_cost=real_cost+1
+                    p=previous_nodes[p]
+
+                #Calcul du coût total en ajoutant le coût estimé du noeud actuel au noeud final
+                  node_cost=real_cost+self.heuristic(node,dst)
+
+                #Traitement du noeud s'il n'a pas déjà été visité ou s'il a été visité avec un coût supérieur
+                  if node not in closed_list or cost[node]>node_cost:
+                      #Ajout du tuple (coût,noeud) à la file
+                      heapq.heappush(open_list,(node_cost,node)) 
+                    #Ajout du noeud à la liste des noeuds visités
+                      closed_list.append(node)
+                    #Actualisation du dictionnaire avec coût du noeud
+                      cost[node]=node_cost
+                    
+              
+                  
+                    
+
+                      
+
+
+
+
+
+
+
+
+                    
+
+
+
 
     @classmethod
     def grid_from_file(cls, file_name): 

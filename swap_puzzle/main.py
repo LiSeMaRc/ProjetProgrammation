@@ -6,6 +6,7 @@ from solver import Solver
 
 
 #Question 2: is_sorted et swaps
+"""
 
 print("Question 2, sorted, grid1",Grid.is_sorted(Grid.grid_from_file("input\\grid1.in")))
 print("Question 2, sorted, grid2",Grid.is_sorted(Grid.grid_from_file("input\\grid2.in")))
@@ -40,8 +41,15 @@ for i in range(1,20):
 #Question 7: bfs for grid
 print("Question 7, grid0",Grid.resolution(Grid.grid_from_file("input\\grid0.in")))
 print("Question 7, grid1",Grid.resolution(Grid.grid_from_file("input\\grid1.in")))
+"""
 
 #Question 8: short bfs for grid
 print("Question 8, grid0",Grid.resolution_short(Grid.grid_from_file("input\\grid0.in")))
-print("Question 8, grid1",Grid.resolution_short(Grid.grid_from_file("input\\grid0.in")))
+print("Question 8, grid1",Grid.resolution_short(Grid.grid_from_file("input\\grid1.in")))
+print("Question 8, grid2",Grid.resolution_short(Grid.grid_from_file("input\\grid2.in")))
 
+
+#Question 9: A star
+print("Question 9, grid0",Grid.a_star(Grid.grid_from_file("input\\grid0.in")))
+print("Question 9, grid1",Grid.a_star(Grid.grid_from_file("input\\grid1.in")))
+print("Question 9, grid2",Grid.a_star(Grid.grid_from_file("input\\grid2.in")))
