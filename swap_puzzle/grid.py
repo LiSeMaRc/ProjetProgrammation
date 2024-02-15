@@ -321,7 +321,7 @@ class Grid():
                         m2=i
                         n2=j
             counter_swap=counter_swap+abs(m2-m1)+abs(n2-n1)
-        counter_swap=math.sqrt(counter_swap)
+        counter_swap=counter_swap/2
         return counter_swap
         
     
