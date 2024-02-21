@@ -18,6 +18,8 @@ import math
 
 import heapq
 
+import numpy as np
+
 
 #Functions
 
@@ -423,9 +425,63 @@ class Grid():
                     #Actualisation du dictionnaire avec coût du noeud
                       cost[node]=node_cost
                     
-              
+    @staticmethod
+    def controlled_difficulty(level):
+        """
+        Generates a grid with a controlled level of difficulty.
+        There are two components of the difficulty level: 
+        - Size of the table (level+1)^2. The number of rows and colums are generated randomly.
+        - Number of swaps: level*2. The swaps are also generated randomly. 
+        
+        Parameters:
+        ------------------
+        level from 1 to 10
+        """
+        #Rows (m) and column (n)
+        #list of dividers of soze of the table
+        
+        m=random.randint(1,(level+1)^2+1)
+        n=((level+1)^2)/2
+
+        #difficulty according to the size of the grid
+        sorted_list=[]
+        for i in range (1,(level+1)^2+1):
+            sorted_list.append(i)
+        
+        #création d'une grille
+        grid=Grid(m,n,grid_from_tuple(tuple(sorted_list)))
+
+        #génération aléatoire d'un nombre plus ou moins complexe de swaps
+        cell_pair_list=[]
+        dict=grid.adj_state()
+        counter=0
+        while counter<=level*2:
+            counter=counter+1
+            t1=random.randint(m)
+            t2=random.randint(n)
+            tuple1=(t1,t2)
+            tuple2=random.choice(dict[tuple1])
+            cell_pair_list.append((tuple1,tuple2))
+        
+        grid.swap_seq(cell_pair_list)
+
+        return grid
+
+
+
+
                   
-                    
+    def resolution_row(self):
+        if self.m==1:
+            list=[]
+            for i in range (self.m):
+                for j in range(self.n):
+                    list.append(self.state[i][j])
+            list.sort
+            return tuple(list)
+        else:
+            raise Exception("Grid not in the format 1*n")
+
 
                       
 
