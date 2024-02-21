@@ -51,7 +51,11 @@ print("Question 8, grid2",Grid.resolution_short(Grid.grid_from_file("input\\grid
 
 
 #Question 9: A star
-print("Question 9, grid0",Grid.a_star(Grid.grid_from_file("input\\grid0.in")))
-print("Question 9, grid1",Grid.a_star(Grid.grid_from_file("input\\grid1.in")))
+#print("Question 9, grid0",Grid.a_star(Grid.grid_from_file("input\\grid0.in")))
+#print("Question 9, grid1",Grid.a_star(Grid.grid_from_file("input\\grid1.in")))
 
 print("Question 9, grid2",Grid.a_star(Grid.grid_from_file("input\\grid2.in")))
+
+#for grid in Grid.adj_grids(Grid.grid_from_file("input\\grid2.in")):
+    #print(grid.node())
+

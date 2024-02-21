@@ -331,9 +331,10 @@ class Grid():
         """
         src=self.node()
         dst=tuple(range(1,self.n*self.m+1))
+
         #List composée de tuples (coût, noeud sous forme de tuple)
-        
         open_list=[(self.heuristic(src,dst),src)]
+
         #On modifie la liste pour trier par coût croissant
         heapq.heapify(open_list)
 
@@ -349,11 +350,26 @@ class Grid():
         #Liste des noeuds parcourus dans chemin optimal
         path=[dst]
 
+        #Condition de sortie précoce
+        counter=0
+        
+
         while len(open_list)>0:
+            counter=counter+1
+            print("")
+            print("BOUCLE",counter)
+            if counter>130:
+                print("counter",counter)
+                break
             c,n=heapq.heappop(open_list) #premier élément de la liste, c=coût, n=node sous forme de tuple
             if n==dst: #tuples
                 p=n
+                counter3=0
                 while p !=src:
+                    counter3=counter3+1
+                    if counter3>20:
+                        break
+                    print("fin pn",previous_nodes[p])
                     path.insert(0,previous_nodes[p])
                     p=previous_nodes[p]
                 print(path) 
@@ -371,17 +387,29 @@ class Grid():
                                     list_swap.append(((a,b),(k,l)))
                 return list_swap
             else:
-              for i in Grid.adj_grids(Grid(self.m,self.n,grid_from_tuple(n,self.m,self.n))): #adj_grids s'applique à une grille
-                  node=i.node() #on retransforme grille en tuple
+              for grid in Grid.adj_grids(Grid(self.m,self.n,grid_from_tuple(n,self.m,self.n))): #adj_grids s'applique à une grille
+                  node=grid.node() #on retransforme grille en tuple
                   #Actualisation du dictionnaire avec previous_nodes
                   previous_nodes[node]=n
+                  print("Initialisation du dictionnaire:clé",node)
+                  print("initialisation dictionnaire: résultat",n)
 
                   #calcul du coût (nb de swaps) entre noeud source et noeud actuel (chaque noeud étant séparé par un swap)
                   real_cost=0
                   p=node
+                  counter2=0
                   while p!=src:
+                    print ("entrée deuxième boucle while")
+                    counter2=counter2+1
+                    if counter2>6:
+                        print("counter2", counter2)
+                        break
                     real_cost=real_cost+1
+                    print("noeud traité",p)
                     p=previous_nodes[p]
+                    print("noeud futur à traiter",p)
+                  print("node",node)
+                  print("")
 
                 #Calcul du coût total en ajoutant le coût estimé du noeud actuel au noeud final
                   node_cost=real_cost+self.heuristic(node,dst)
