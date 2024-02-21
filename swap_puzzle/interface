@@ -1,0 +1,126 @@
+from grid import Grid
+
+import pygame 
+
+class Interface(Grid): 
+    """
+    
+    """
+    def __init__(self, m, n, initial_state = []):
+        super().__init__(m, n, initial_state = [])
+    
+pygame.init()
+
+window_color=(175,211,227)
+
+window = pygame.display.set_mode((550, 440)) 
+
+pygame.display.set_caption("Swap Puzzle") 
+
+exit = False
+
+while not exit: 
+    for event in pygame.event.get(): 
+        window.fill(window_color)
+        
+        #Condition de sortie
+        if event.type == pygame.QUIT: 
+            exit = True
+        
+        
+        
+        #Title
+        text_color=(255,255,255)
+        title_font=pygame.font.Font(None,50)
+        title_text=title_font.render("Swap puzzle",True,text_color)
+        window.blit(title_text,(35,20))
+        
+        text_font=pygame.font.Font(None,30)
+        text=text_font.render("Choose your level of difficulty",True,text_color)
+        window.blit(text,(20,70))
+            
+        #Buttons
+        rect_color=(47,106,133)
+        
+        rect1=pygame.Rect((100,100),(50,50))
+        rect2=pygame.Rect((100,170),(50,50))
+        rect3=pygame.Rect((170,100),(50,50))
+        rect4=pygame.Rect((170,170),(50,50))
+        rect5=pygame.Rect((240,100),(50,50))
+        rect6=pygame.Rect((240,170),(50,50))
+        rect7=pygame.Rect((310,100),(50,50))
+        rect8=pygame.Rect((310,170),(50,50))
+        rect9=pygame.Rect((380,100),(50,50))
+        rect10=pygame.Rect((380,170),(50,50))
+
+        pygame.draw.rect(window,rect_color,rect1)
+        pygame.draw.rect(window,rect_color,rect2)
+        pygame.draw.rect(window,rect_color,rect3)
+        pygame.draw.rect(window,rect_color,rect4)
+        pygame.draw.rect(window,rect_color,rect5)
+        pygame.draw.rect(window,rect_color,rect6)
+        pygame.draw.rect(window,rect_color,rect7)
+        pygame.draw.rect(window,rect_color,rect8) 
+        pygame.draw.rect(window,rect_color,rect9)
+        pygame.draw.rect(window,rect_color,rect10)
+        
+        font=pygame.font.Font(None,20)
+        
+        
+        text1=font.render("Level1",True,text_color)
+        text2=font.render("Level2",True,text_color)
+        text3=font.render("Level3",True,text_color)
+        text4=font.render("Level4",True,text_color)
+        text5=font.render("Level5",True,text_color)
+        text6=font.render("Level6",True,text_color)
+        text7=font.render("Level7",True,text_color)
+        text8=font.render("Level8",True,text_color)
+        text9=font.render("Level9",True,text_color)
+        text10=font.render("Level10",True,text_color)
+        
+        window.blit(text1,(rect1.x+5,rect1.y+18))
+        window.blit(text2,(rect2.x+5,rect2.y+18))
+        window.blit(text3,(rect3.x+5,rect3.y+18))
+        window.blit(text4,(rect4.x+5,rect4.y+18))
+        window.blit(text5,(rect5.x+5,rect5.y+18))
+        window.blit(text6,(rect6.x+5,rect6.y+18))
+        window.blit(text7,(rect7.x+5,rect7.y+18))
+        window.blit(text8,(rect8.x+5,rect8.y+18))
+        window.blit(text9,(rect9.x+5,rect9.y+18))
+        window.blit(text10,(rect10.x+4,rect10.y+18))
+        
+        if event.type==pygame.mousebuttondown:
+            if rect1.collidepoint(event.pos):
+                exit=True
+                grid.controlled_difficulty(1)
+            elif rect2.collidepoint(event.pos):
+                exit=True
+                grid.controlled_difficulty(2)
+            elif rect3.collidepoint(event.pos):
+                exit=True
+                grid.controlled_difficulty(3)
+            elif rect4.collidepoint(event.pos):
+                exit=True
+                grid.controlled_difficulty(4)
+            elif rect5.collidepoint(event.pos):
+                exit=True
+                grid.controlled_difficulty(5)
+            elif rect6.collidepoint(event.pos):
+                exit=True
+                grid.controlled_difficulty(6)
+            elif rect7.collidepoint(event.pos):
+                exit=True
+                grid.controlled_difficulty(7)
+            elif rect8.collidepoint(event.pos):
+                exit=True
+                grid.controlled_difficulty(8)
+            elif rect9.collidepoint(event.pos):
+                exit=True
+                grid.controlled_difficulty(9)
+            else:
+                exit=True
+                grid.controlled_difficulty(10)
+                
+
+        
+        pygame.display.update() 
