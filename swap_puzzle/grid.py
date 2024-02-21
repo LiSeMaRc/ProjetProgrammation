@@ -21,25 +21,9 @@ import heapq
 import numpy as np
 
 
-#Functions
 
-def grid_from_tuple(t,n,m): 
-    """
-    A function that transforms a tuple in the state of a grid.
 
-    Parameters:
-    - - - - - - - - - - - - - - - - - - -
-    t: tuple
-    n: number of rows of the expected grid
-    m: number of columns of the expected grid
-    """
 
-    if len(t)!=n*m:
-        print("This tuple can't represent a grid.")
-        return None 
-    else:
-        grid=[list(t[i:i+m]) for i in range (0,len(t),m)]
-        return grid
 
 class Grid():
     """
@@ -171,7 +155,25 @@ class Grid():
                 node_list.append(self.state[i][j])
         node_tuple=tuple(node_list)
         return node_tuple
-       
+    
+    @staticmethod
+    def grid_from_tuple(tuple,n,m): 
+        """
+        A function that transforms a tuple in the state of a grid.
+
+        Parameters:
+        - - - - - - - - - - - - - - - - - - -
+        t: tuple
+        n: number of rows of the expected grid
+        m: number of columns of the expected grid
+        """
+
+        if len(tuple)!=n*m:
+            print("This tuple can't represent a grid.")
+            return None 
+        else:
+            grid=[list(tuple[i:i+m]) for i in range (0,len(tuple),m)]
+            return grid
   
     def permutations(self):
         """
@@ -227,7 +229,7 @@ class Grid():
 
         #Addition of edges between adjoining grids, i.e. between grids separated by one swap only
         for i in g.nodes: 
-            grid=Grid(self.m,self.n,grid_from_tuple(i,self.m,self.n))
+            grid=Grid(self.m,self.n,Grid.grid_from_tuple(i,self.m,self.n))
             list_grid=Grid.adj_grids(grid)
             for j in list_grid:
                 g.add_edge(i,j.node()) 
@@ -286,7 +288,7 @@ class Grid():
                 return list_swap
              
             else:
-                for i in Grid(self.m,self.n,grid_from_tuple(n,self.m,self.n)).adj_grids(): #adds adjoining nodes thanks to adj_grids
+                for i in Grid(self.m,self.n,Grid.grid_from_tuple(n,self.m,self.n)).adj_grids(): #adds adjoining nodes thanks to adj_grids
                     i=i.node()
                     if i not in visited:
                         file.append(i) 
@@ -303,8 +305,8 @@ class Grid():
         """
 
         #Création de deux objets grilles pour accéder à l'attribut state
-        grid1=Grid(self.m,self.n,grid_from_tuple(node1,self.m,self.n))
-        grid2=Grid(self.m,self.n,grid_from_tuple(node2,self.m,self.n))
+        grid1=Grid(self.m,self.n,Grid.grid_from_tuple(node1,self.m,self.n))
+        grid2=Grid(self.m,self.n,Grid.grid_from_tuple(node2,self.m,self.n))
 
         #Parcours de toutes les cellules des grilles par leur contenu
         for k in range (1,self.m*self.n+1):
@@ -389,7 +391,7 @@ class Grid():
                                     list_swap.append(((a,b),(k,l)))
                 return list_swap
             else:
-              for grid in Grid.adj_grids(Grid(self.m,self.n,grid_from_tuple(n,self.m,self.n))): #adj_grids s'applique à une grille
+              for grid in Grid.adj_grids(Grid(self.m,self.n,Grid.grid_from_tuple(n,self.m,self.n))): #adj_grids s'applique à une grille
                   node=grid.node() #on retransforme grille en tuple
                   #Actualisation du dictionnaire avec previous_nodes
                   previous_nodes[node]=n
@@ -437,19 +439,28 @@ class Grid():
         ------------------
         level from 1 to 10
         """
-        #Rows (m) and column (n)
-        #list of dividers of soze of the table
-        
-        m=random.randint(1,(level+1)^2+1)
-        n=((level+1)^2)/2
+        #Difficulty: size of the grid
+        size=(level+1)**2
 
-        #difficulty according to the size of the grid
+        #Sorted_list with the determined size
         sorted_list=[]
-        for i in range (1,(level+1)^2+1):
+        for i in range (1,size+1):
             sorted_list.append(i)
-        
+
+        #list of dividers of size 
+        list_div=[]
+        for i in range(1,size//2+1):
+            if size%i==0:
+                list_div.append(i)
+        list_div.append(size)
+        print("liste div",list_div)
+
+        #random but adequate number of rows and columns
+        m=random.choice(list_div)
+        n=int(size/m)
+
         #création d'une grille
-        grid=Grid(m,n,grid_from_tuple(tuple(sorted_list)))
+        grid=Grid(m,n,Grid.grid_from_tuple(tuple(sorted_list),m,n))
 
         #génération aléatoire d'un nombre plus ou moins complexe de swaps
         cell_pair_list=[]
@@ -457,11 +468,12 @@ class Grid():
         counter=0
         while counter<=level*2:
             counter=counter+1
-            t1=random.randint(m)
-            t2=random.randint(n)
+            t1=random.randint(0,m-1)
+            t2=random.randint(0,n-1)
             tuple1=(t1,t2)
             tuple2=random.choice(dict[tuple1])
             cell_pair_list.append((tuple1,tuple2))
+        print("cell list",cell_pair_list,"len",len(cell_pair_list))
         
         grid.swap_seq(cell_pair_list)
 
@@ -471,14 +483,19 @@ class Grid():
 
 
                   
-    def resolution_row(self):
+    def bubble_sort(self):
         if self.m==1:
-            list=[]
-            for i in range (self.m):
-                for j in range(self.n):
-                    list.append(self.state[i][j])
-            list.sort
-            return tuple(list)
+            #transformation d'une double liste en simple liste
+            list=self.state[0]
+            list_swap=[]
+            for i in range(self.n-2):
+                for j in range (self.n-1-i):
+                    if list[j]>list[j+1]:
+                        self.swap((0,j),(0,j+1))
+                        list_swap.append(((0,j),(0,j+1)))
+                    
+            print(self.state)
+            return list_swap
         else:
             raise Exception("Grid not in the format 1*n")
 
