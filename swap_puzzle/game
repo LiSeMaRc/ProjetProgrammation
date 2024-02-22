@@ -1,0 +1,158 @@
+from interface import Interface
+from grid import Grid
+
+
+import pygame 
+
+
+
+
+def menu():
+    #Condition de sortie
+    
+    exit = False
+
+    while not exit: 
+
+        for event in pygame.event.get(): #events: mouse, keyboard
+          
+            #Exit condition
+            if event.type == pygame.QUIT: 
+                exit = True
+
+            elif event.type==pygame.MOUSEBUTTONDOWN:
+                if rect1.collidepoint(event.pos):
+                    exit=True
+                    draw_grid(1)
+                elif rect2.collidepoint(event.pos):
+                    exit=True
+                    draw_grid(2)
+                elif rect3.collidepoint(event.pos):
+                    exit=True
+                    draw_grid(3)
+                elif rect4.collidepoint(event.pos):
+                    exit=True
+                    draw_grid(4)
+                elif rect5.collidepoint(event.pos):
+                    exit=True
+                    draw_grid(5)
+                elif rect6.collidepoint(event.pos):
+                    exit=True
+                    draw_grid(6)
+                elif rect7.collidepoint(event.pos):
+                    exit=True
+                    draw_grid(7)
+                elif rect8.collidepoint(event.pos):
+                    exit=True
+                    draw_grid(8)
+                elif rect9.collidepoint(event.pos):
+                    exit=True
+                    draw_grid(9)
+                else:
+                    exit=True
+                    draw_grid(10)
+
+            pygame.display.flip() 
+
+
+
+
+
+
+#Creation of the first window
+
+#Initialisation of pygame's modules
+pygame.init()
+
+#Colours
+window_color=(175,211,227)
+rect_color=(47,106,133)
+text_color=(255,255,255)
+black=(0,0,0)
+
+
+#Fonts
+title_font=pygame.font.Font(None,50)
+text_font=pygame.font.Font(None,30)
+font=pygame.font.Font(None,20)
+
+#Sizes
+width,height=500,500
+rect_size=(width//10,height//10)
+
+#Creation of the window:
+window = pygame.display.set_mode((width, height))
+window.fill(window_color)
+
+#Title and instruction
+pygame.display.set_caption("Swap Puzzle") 
+
+title_text=title_font.render("Swap puzzle",True,text_color)
+window.blit(title_text,(width//2,height//10))
+
+text=text_font.render("Choose your level of difficulty",True,text_color)
+window.blit(text,(width//2,2*height//10))
+
+
+
+"""
+Draw the buttons corresponding to each level.
+Deux questions: manière plus simple avec boucle? et je voulais le mettre dans une fonction mais pb de reconnaissance de l'objet rect1 même avec un return
+"""
+#Creation of rectangles
+rect1=pygame.Rect((width//5,4*height//10),rect_size)
+rect2=pygame.Rect((2*width//5,4*height//10),rect_size)
+rect3=pygame.Rect((3*width//5,4*height//10),rect_size)
+rect4=pygame.Rect((4*width//5,4*height//10),rect_size)
+rect5=pygame.Rect((5*width//5,4*height//10),rect_size)
+rect6=pygame.Rect((width//5,6*height//10),rect_size)
+rect7=pygame.Rect((2*width//5,6*height//10),rect_size)
+rect8=pygame.Rect((3*width//5,6*height//10),rect_size)
+rect9=pygame.Rect((4*width//5,6*height//10),rect_size)
+rect10=pygame.Rect((5*width//5,6*height//10),rect_size)
+
+#Drawing of rectangles
+pygame.draw.rect(window,rect_color,rect1)
+pygame.draw.rect(window,rect_color,rect2)
+pygame.draw.rect(window,rect_color,rect3)
+pygame.draw.rect(window,rect_color,rect4)
+pygame.draw.rect(window,rect_color,rect5)
+pygame.draw.rect(window,rect_color,rect6)
+pygame.draw.rect(window,rect_color,rect7)
+pygame.draw.rect(window,rect_color,rect8) 
+pygame.draw.rect(window,rect_color,rect9)
+pygame.draw.rect(window,rect_color,rect10)
+
+#Creation of the text    
+text1=font.render("Level1",True,text_color)
+text2=font.render("Level2",True,text_color)
+text3=font.render("Level3",True,text_color)
+text4=font.render("Level4",True,text_color)
+text5=font.render("Level5",True,text_color)
+text6=font.render("Level6",True,text_color)
+text7=font.render("Level7",True,text_color)
+text8=font.render("Level8",True,text_color)
+text9=font.render("Level9",True,text_color)
+text10=font.render("Level10",True,text_color)
+
+#Writing of the text
+window.blit(text1,(rect1.x+rect_size[0]//2,rect1.y+rect_size[1]//2))
+window.blit(text2,(rect2.x+rect_size[0]//2,rect2.y+rect_size[1]//2))
+window.blit(text3,(rect3.x+rect_size[0]//2,rect3.y+rect_size[1]//2))
+window.blit(text4,(rect4.x+rect_size[0]//2,rect4.y+rect_size[1]//2))
+window.blit(text5,(rect5.x+rect_size[0]//2,rect5.y+rect_size[1]//2))
+window.blit(text6,(rect6.x+rect_size[0]//2,rect6.y+rect_size[1]//2))
+window.blit(text7,(rect7.x+rect_size[0]//2,rect7.y+rect_size[1]//2))
+window.blit(text8,(rect8.x+rect_size[0]//2,rect8.y+rect_size[1]//2))
+window.blit(text9,(rect9.x+rect_size[0]//2,rect9.y+rect_size[1]//2))
+window.blit(text10,(rect10.x+rect_size[0]//2,rect10.y+rect_size[1]//2))
+    
+menu()
+
+
+            
+
+
+            
+            
+
