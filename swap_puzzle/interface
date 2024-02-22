@@ -186,7 +186,7 @@ class Interface(Grid):
                             cell_to_swap=None
     
     @staticmethod
-    def controlled_difficulty(level):
+    def controlled_difficulty_bis(level):
         """
         Generates a grid with a controlled level of difficulty.
         There are two components of the difficulty level: 
@@ -252,52 +252,52 @@ class Interface(Grid):
                 elif event.type==pygame.MOUSEBUTTONDOWN:
                     if rect1.collidepoint(event.pos):
                         exit=True
-                        grid=Grid.controlled_difficulty(1)
+                        grid=Interface.controlled_difficulty_bis(1)
                         Interface.draw_grid(grid) #ne reconnaissait pas sinon
                         Interface.swap_cells(grid)
                     elif rect2.collidepoint(event.pos):
                         exit=True
-                        grid=Grid.controlled_difficulty(2)
+                        grid=Interface.controlled_difficulty_bis(2)
                         Interface.draw_grid(grid) 
                         Interface.swap_cells(grid)
                     elif rect3.collidepoint(event.pos):
                         exit=True                        
-                        grid=Grid.controlled_difficulty(3)
+                        grid=Interface.controlled_difficulty_bis(3)
                         Interface.draw_grid(grid) 
                         Interface.swap_cells(grid)
                     elif rect4.collidepoint(event.pos):
                         exit=True
-                        grid=Grid.controlled_difficulty(4)
+                        grid=Interface.controlled_difficulty_bis(4)
                         Interface.draw_grid(grid) 
                         Interface.swap_cells(grid)
                     elif rect5.collidepoint(event.pos):
                         exit=True
-                        grid=Grid.controlled_difficulty(5)
+                        grid=Interface.controlled_difficulty_bis(5)
                         Interface.draw_grid(grid) 
                         Interface.swap_cells(grid)
                     elif rect6.collidepoint(event.pos):
                         exit=True
-                        grid=Grid.controlled_difficulty(6)
+                        grid=Interface.controlled_difficulty_bis(6)
                         Interface.draw_grid(grid) 
                         Interface.swap_cells(grid)
                     elif rect7.collidepoint(event.pos):
                         exit=True
-                        grid=Grid.controlled_difficulty(7)
+                        grid=Interface.controlled_difficulty_bis(7)
                         Interface.draw_grid(grid) 
                         Interface.swap_cells(grid)
                     elif rect8.collidepoint(event.pos):
                         exit=True
-                        grid=Grid.controlled_difficulty(8)
+                        grid=Interface.controlled_difficulty_bis(8)
                         Interface.draw_grid(grid) 
                         Interface.swap_cells(grid)
                     elif rect9.collidepoint(event.pos):
                         exit=True
-                        grid=Grid.controlled_difficulty(9)
+                        grid=Interface.controlled_difficulty_bis(9)
                         Interface.draw_grid(grid) 
                         Interface.swap_cells(grid)
                     else:
                         exit=True
-                        grid=Grid.controlled_difficulty(10)
+                        grid=Interface.controlled_difficulty_bis(10)
                         Interface.draw_grid(grid) 
                         Interface.swap_cells(grid)
 
