@@ -170,13 +170,13 @@ class Interface(Grid):
                             #Sorted grid?
                             """
                             if self.node()==tuple(range(1,self.n*self.m+1)):
-                                if list_swap==self.a_star(): 
+                                if len(list_swap)==len(self.a_star()): 
                                     window.fill(window_color)
                                     title_text=text_font.render("you solved the grid in the shortest way possible!",True,black)
                                     window.blit(title_text,(self.width+50,self.height//2))
                                 else:
                                     window.fill(window_color)
-                                    title_text=text_font.render("You solved the grid but you can be faster!",True,black)
+                                    title_text=text_font.render("You solved the grid with "+str(len(list_swap))+" swaps. The optimal path contains"+str(len(self.a_star())+" swaps",True,black)
                                     window.blit(title_text,(self.width+50,self.height//2))
                             else:
                                 self.draw_grid()

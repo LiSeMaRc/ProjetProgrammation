@@ -296,17 +296,17 @@ class Grid():
                         previous_nodes[i]=n
         return None
     
-    def heuristic(self,node1,node2): #en faire une méthode statique?
+    def heuristic(self,node): #en faire une méthode statique?
         """
         Parameters:
         ---
-        node1: node1 is a tuple
-        node2: node2 is a tuple
+        node: node is a tuple
+        
         """
 
         #Création de deux objets grilles pour accéder à l'attribut state
-        grid1=Grid(self.m,self.n,Grid.grid_from_tuple(node1,self.m,self.n))
-        grid2=Grid(self.m,self.n,Grid.grid_from_tuple(node2,self.m,self.n))
+        grid1=Grid(self.m,self.n,Grid.grid_from_tuple(node,self.m,self.n))
+        grid2=Grid(self.m,self.n,Grid.grid_from_tuple(tuple(range(1,self.n*self.m+1)),self.m,self.n))
 
         #Parcours de toutes les cellules des grilles par leur contenu
         for k in range (1,self.m*self.n+1):
@@ -331,13 +331,14 @@ class Grid():
     
     def a_star(self):
         """
-        src, dst sous forme de tuples
+        
         """
+        #noeud source et d'arrivée sous forme de tuple
         src=self.node()
         dst=tuple(range(1,self.n*self.m+1))
 
         #List composée de tuples (coût, noeud sous forme de tuple)
-        open_list=[(self.heuristic(src,dst),src)]
+        open_list=[(self.heuristic(src),src)]
 
         #On modifie la liste pour trier par coût croissant
         heapq.heapify(open_list)
@@ -346,7 +347,10 @@ class Grid():
         closed_list=[]
 
         #Dictionnaire qui à chaque noeud sous forme de tuple associe son coût
-        cost={src:self.heuristic(src,dst)}
+        cost={src:self.heuristic(src)}
+
+        #Dictionnaire qui à chaque noeud associe le coût réel, i.e. le coût qui le sépare du noeud source
+        src_cost={src:0}
 
         #Dictionnaire qui à chaque noeud associe noeud précédent
         previous_nodes={}
@@ -354,26 +358,15 @@ class Grid():
         #Liste des noeuds parcourus dans chemin optimal
         path=[dst]
 
-        #Condition de sortie précoce
+        #Condition de sortie précoce: A EFFACER
         counter=0
         
 
         while len(open_list)>0:
-            counter=counter+1
-            print("")
-            print("BOUCLE",counter)
-            if counter>130:
-                print("counter",counter)
-                break
-            c,n=heapq.heappop(open_list) #premier élément de la liste, c=coût, n=node sous forme de tuple
-            if n==dst: #tuples
-                p=n
-                counter3=0
+            c,ext_node=heapq.heappop(open_list) #premier élément de la liste, c=coût, n=node sous forme de tuple
+            if ext_node==dst: #tuples
+                p=ext_node
                 while p !=src:
-                    counter3=counter3+1
-                    if counter3>20:
-                        break
-                    print("fin pn",previous_nodes[p])
                     path.insert(0,previous_nodes[p])
                     p=previous_nodes[p]
                 print(path) 
@@ -382,7 +375,7 @@ class Grid():
          
                 for i in range (len(list)-1):
                     (a,b)=(-1,-1)
-                    for k in range(0,self.m):
+                    for k in range(self.m):
                         for l in range(0,self.n):
                             if list[i][k*self.n+l]!=list[i+1][k*self.n+l]:
                                 if(a,b)==(-1,-1):
@@ -391,41 +384,22 @@ class Grid():
                                     list_swap.append(((a,b),(k,l)))
                 return list_swap
             else:
-              for grid in Grid.adj_grids(Grid(self.m,self.n,Grid.grid_from_tuple(n,self.m,self.n))): #adj_grids s'applique à une grille
+              for grid in Grid.adj_grids(Grid(self.m,self.n,Grid.grid_from_tuple(ext_node,self.m,self.n))): #adj_grids s'applique à une grille
                   node=grid.node() #on retransforme grille en tuple
-                  #Actualisation du dictionnaire avec previous_nodes
-                  previous_nodes[node]=n
-                  print("Initialisation du dictionnaire:clé",node)
-                  print("initialisation dictionnaire: résultat",n)
-
-                  #calcul du coût (nb de swaps) entre noeud source et noeud actuel (chaque noeud étant séparé par un swap)
-                  real_cost=0
-                  p=node
-                  counter2=0
-                  while p!=src:
-                    print ("entrée deuxième boucle while")
-                    counter2=counter2+1
-                    if counter2>6:
-                        print("counter2", counter2)
-                        break
-                    real_cost=real_cost+1
-                    print("noeud traité",p)
-                    p=previous_nodes[p]
-                    print("noeud futur à traiter",p)
-                  print("node",node)
-                  print("")
-
-                #Calcul du coût total en ajoutant le coût estimé du noeud actuel au noeud final
-                  node_cost=real_cost+self.heuristic(node,dst)
-
+                  
                 #Traitement du noeud s'il n'a pas déjà été visité ou s'il a été visité avec un coût supérieur
-                  if node not in closed_list or cost[node]>node_cost:
+                  if node not in closed_list or cost[node]>src_cost[ext_node]+1:
+                      #Actualisation du dictionnaire src_cost:
+                      src_cost[node]=src_cost[ext_node]+1
                       #Ajout du tuple (coût,noeud) à la file
+                      node_cost=src_cost[node]+self.heuristic(node)
                       heapq.heappush(open_list,(node_cost,node)) 
-                    #Ajout du noeud à la liste des noeuds visités
+                      #Ajout du noeud à la liste des noeuds visités
                       closed_list.append(node)
-                    #Actualisation du dictionnaire avec coût du noeud
+                      #Actualisation du dictionnaire avec coût du noeud
                       cost[node]=node_cost
+                      #Actualisation du dico previous nodes
+                      previous_nodes[node]=ext_node
                     
     @staticmethod
     def controlled_difficulty(level):
