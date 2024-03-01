@@ -138,7 +138,6 @@ class Interface(Grid):
         #numbers
         for i in range(self.m):
             for j in range(self.n):
-                print("i",i,"j",j,self.state[i][j])
                 text=font.render(str(self.state[i][j]),True,black)
                 window.blit(text, (100+j*self.cell_size[0] + self.cell_size[0]//2-1, 100+i*self.cell_size[1] + self.cell_size[1]//2-1))
     
@@ -159,29 +158,42 @@ class Interface(Grid):
                         x,y=pygame.mouse.get_pos()
                         col=(x-100)//self.cell_size[0]
                         row=(y-100)//self.cell_size[1]
+                        print(row,col)
                         #Premier ou deuxième clic?
                         if cell_to_swap==None:
+                            print("case1")
                             cell_to_swap=(row,col)
                         else: 
+                            print("case2")
                             #Modification of state[i][j]
                             self.swap((row,col),cell_to_swap) #add error message if swap not allowed?
+                            print("après swap",self.state)
                             #Shortest way?  
                             list_swap.append(((row,col),cell_to_swap))
                             #Sorted grid?
-                            """
+                            print(self.node()==tuple(range(1,self.n*self.m+1)))
+                            
                             if self.node()==tuple(range(1,self.n*self.m+1)):
+                                print("entréeif 0")
+                                print(len(self.a_star()))
                                 if len(list_swap)==len(self.a_star()): 
+                                    print("entrée premier if")
+                                    print(len(self.a_star()))
+                                    print(len(list_swap)==len(self.a_star()))
                                     window.fill(window_color)
                                     title_text=text_font.render("you solved the grid in the shortest way possible!",True,black)
                                     window.blit(title_text,(self.width+50,self.height//2))
+                                    pygame.display.update()
                                 else:
+                                    print("entrée else")
                                     window.fill(window_color)
-                                    title_text=text_font.render("You solved the grid with "+str(len(list_swap))+" swaps. The optimal path contains"+str(len(self.a_star())+" swaps",True,black)
+                                    title_text=text_font.render("You solved the grid with "+str(len(list_swap))+" swaps. The optimal path contains"+str(len(self.a_star()))+" swaps",True,black)
                                     window.blit(title_text,(self.width+50,self.height//2))
+                                    pygame.display.update()
                             else:
                                 self.draw_grid()
-                                """
-                            self.draw_grid() #à enlever
+                                pygame.display.update()
+
                             #Reinitialisation for the next couple of swaps
                             cell_to_swap=None
     
