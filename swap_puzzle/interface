@@ -148,6 +148,8 @@ class Interface(Grid):
         exit=False
         cell_to_swap=None
         list_swap=[]
+        length=len(self.a_star())
+        print("length",length)
 
         while not exit:
             for event in pygame.event.get():
@@ -175,20 +177,26 @@ class Interface(Grid):
                             
                             if self.node()==tuple(range(1,self.n*self.m+1)):
                                 print("entréeif 0")
-                                print(len(self.a_star()))
-                                if len(list_swap)==len(self.a_star()): 
-                                    print("entrée premier if")
-                                    print(len(self.a_star()))
-                                    print(len(list_swap)==len(self.a_star()))
+                                print(len(list_swap)==length)
+                                if len(list_swap)==length:
+                                    print("entrée if1")
+                                    print("étape 1")
                                     window.fill(window_color)
-                                    title_text=text_font.render("you solved the grid in the shortest way possible!",True,black)
-                                    window.blit(title_text,(self.width+50,self.height//2))
+                                    text1=title_font.render("Congratulations!",True,black)
+                                    text2=font.render("You solved the grid in the shortest way possible!",True,black)
+                                    window.blit(text1,(50,150))
+                                    window.blit(text2,(50,300))
+                                    print("étape fin")
                                     pygame.display.update()
+                                    pygame.time.delay(10000)
                                 else:
-                                    print("entrée else")
                                     window.fill(window_color)
-                                    title_text=text_font.render("You solved the grid with "+str(len(list_swap))+" swaps. The optimal path contains"+str(len(self.a_star()))+" swaps",True,black)
-                                    window.blit(title_text,(self.width+50,self.height//2))
+                                    text1=title_font.render("Congratulations!",True,black)
+                                    text2=font.render("You solved the grid with "+str(len(list_swap))+" swaps.",True,black)
+                                    text3=font.render("The optimal path contains "+str(length)+" swaps",True,black)
+                                    window.blit(text1,(50,150))
+                                    window.blit(text2,(50,250))
+                                    window.blit(text3,(50,350))
                                     pygame.display.update()
                             else:
                                 self.draw_grid()
