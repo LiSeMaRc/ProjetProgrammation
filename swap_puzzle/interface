@@ -117,7 +117,6 @@ class Interface(Grid):
         window.blit(text10,(rect10.x+rect_size[0]//14,rect10.y+rect_size[1]//2-5))
 
         pygame.display.update()
-        pygame.time.delay(10000)
     
     def draw_grid(self):
                 
@@ -142,7 +141,6 @@ class Interface(Grid):
                 window.blit(text, (100+j*self.cell_size[0] + self.cell_size[0]//2-1, 100+i*self.cell_size[1] + self.cell_size[1]//2-1))
     
         pygame.display.update()
-        pygame.time.delay(10000)
     
     def swap_cells(self):
         exit=False
