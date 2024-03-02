@@ -35,7 +35,6 @@ class Solver(Grid):
                             for l in range(j,column,-1):
                                 list_swap.append(((i,l),(i,l-1)))
                                 self.swap((i,l),(i,l-1))
-        print(self.state)
         return list_swap
     #Complexity: (m*n)^2(m+n)
     

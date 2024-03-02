@@ -1,0 +1,25 @@
+import unittest 
+from grid import Grid
+
+class Test_IsSorted(unittest.TestCase):
+
+    def test_grid0(self):
+        grid = Grid.grid_from_file("input/grid0.in")
+        self.assertEqual(grid.is_sorted(), False)
+        grid.swap_seq([((0,1), (1,1)),((0,0), (0,1))])
+        self.assertEqual(grid.is_sorted(), True)
+
+    def test_grid1(self):
+        grid = Grid.grid_from_file("input/grid1.in")
+        self.assertEqual(grid.is_sorted(), False)
+        grid.swap((3,0), (3,1))
+        self.assertEqual(grid.is_sorted(), True)
+    
+    def test_grid2(self):
+        grid = Grid.grid_from_file("input/grid2.in")
+        self.assertEqual(grid.is_sorted(), False)
+        grid.swap_seq([((0,0), (1,0)),((1,0), (2,0)),((1,1), (2,1)),((0,1), (1,1))])
+        self.assertEqual(grid.is_sorted(), True)
+
+if __name__ == '__main__':
+    unittest.main()

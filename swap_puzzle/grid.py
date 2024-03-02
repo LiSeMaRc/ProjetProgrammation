@@ -130,7 +130,7 @@ class Grid():
             So the format should be [((i1, j1), (i2, j2)), ((i1', j1'), (i2', j2')), ...].
         """
         for k in cell_pair_list:
-            Grid.swap(self,k[0],k[1])
+            self.swap(k[0],k[1])
     
     def graphic_representation(self):
         """

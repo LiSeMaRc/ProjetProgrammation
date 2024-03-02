@@ -119,8 +119,8 @@ class Interface(Grid):
         pygame.display.update()
     
     def draw_grid(self):
-                
-        window.fill(window_color) 
+
+        window.fill(window_color)
 
         #Instructions:
         text=text_font.render("Solve this swap puzzle in a minimum time",True,white)
@@ -357,5 +357,7 @@ class Interface(Grid):
 
                 
 
-Interface.draw_menu(Interface.grid_from_file_bis("input\\grid2.in"))
-Interface.choose_level(Interface.grid_from_file_bis("input\\grid2.in"))
+#Interface.draw_menu(Interface.grid_from_file_bis("input\\grid2.in"))
+#Interface.choose_level(Interface.grid_from_file_bis("input\\grid2.in"))
+
+Interface.draw_grid(Interface.grid_from_file_bis("input\\grid0.in"))
