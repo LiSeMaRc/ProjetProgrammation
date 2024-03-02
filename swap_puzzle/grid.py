@@ -168,19 +168,19 @@ class Grid():
         m: number of columns of the expected grid
         """
 
-        if len(tuple)!=n*m:
-            print("This tuple can't represent a grid.")
-            return None 
-        else:
+        if len(tuple)==n*m:
             grid=[list(tuple[i:i+m]) for i in range (0,len(tuple),m)]
             return grid
+        else:
+            raise Exception("The tuple can't represent a grid")
+
   
     def permutations(self):
         """
         Represents the possible states of the grid, which are the different ways to organise n*m elements.
         It returns a liste of tuples, that is to say of grids as nodes. 
         """
-        permutations=list(itertools.permutations(Grid.node(self)))
+        permutations=list(itertools.permutations(self.node()))
         return permutations 
 
     def adj_state(self):

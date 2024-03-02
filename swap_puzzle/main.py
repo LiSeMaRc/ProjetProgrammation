@@ -7,8 +7,17 @@ from solver import Solver
 
 #Question 4: graphic representation of a grid : voir plutôt module partie Interface pygame
 
-print("Question 4,grid0",Grid.graphic_representation(Grid.grid_from_file("input\\grid0.in")))
-print("Question 4,grid1",Grid.graphic_representation(Grid.grid_from_file("input\\grid1.in")))
+#print("Question 4,grid0",Grid.graphic_representation(Grid.grid_from_file("input\\grid0.in")))
+#print("Question 4,grid1",Grid.graphic_representation(Grid.grid_from_file("input\\grid1.in")))
+
+#Permutations
+#print("Question 4,grid0",Grid.permutations(Grid.grid_from_file("input\\grid0.in")))
+
+
+
+
+
+
 """
 #Question 5: bfs first version
 for i in range(1,20):
@@ -28,7 +37,7 @@ print("Question 8, grid0",Grid.resolution_short(Grid.grid_from_file("input\\grid
 print("Question 8, grid1",Grid.resolution_short(Grid.grid_from_file("input\\grid1.in")))
 print("Question 8, grid2",Grid.resolution_short(Grid.grid_from_file("input\\grid2.in")))
 """
-print("Question 8, grid2",Grid.resolution_short(Grid.grid_from_file("input\\grid2.in")))
+#print("Question 8, grid2",Grid.resolution_short(Grid.grid_from_file("input\\grid2.in")))
 
 #print("Question 9, grid0",Grid.heuristic(Grid.grid_from_file("input\\grid0.in"),(1,2,4,3)))
 

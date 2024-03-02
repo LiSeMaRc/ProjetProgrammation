@@ -5,21 +5,22 @@ class Test_IsSorted(unittest.TestCase):
 
     def test_grid0(self):
         grid = Grid.grid_from_file("input/grid0.in")
-        self.assertEqual(grid.is_sorted(), False)
+        self.assertFalse(grid.is_sorted())
         grid.swap_seq([((0,1), (1,1)),((0,0), (0,1))])
-        self.assertEqual(grid.is_sorted(), True)
+        self.assertTrue(grid.is_sorted())
 
     def test_grid1(self):
         grid = Grid.grid_from_file("input/grid1.in")
-        self.assertEqual(grid.is_sorted(), False)
+        self.assertFalse(grid.is_sorted())
         grid.swap((3,0), (3,1))
-        self.assertEqual(grid.is_sorted(), True)
+        self.assertTrue(grid.is_sorted())
     
     def test_grid2(self):
         grid = Grid.grid_from_file("input/grid2.in")
-        self.assertEqual(grid.is_sorted(), False)
+        self.assertFalse(grid.is_sorted())
         grid.swap_seq([((0,0), (1,0)),((1,0), (2,0)),((1,1), (2,1)),((0,1), (1,1))])
-        self.assertEqual(grid.is_sorted(), True)
+        self.assertTrue(grid.is_sorted())
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -3,7 +3,7 @@ from solver import Solver
 
 import unittest
 
-class Test_Swap(unittest.TestCase):
+class Test_SimpleSolution(unittest.TestCase):
 
     def test_grid0(self):
         grid = Grid.grid_from_file("input/grid0.in") 

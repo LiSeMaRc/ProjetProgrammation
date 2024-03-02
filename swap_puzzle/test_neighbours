@@ -1,0 +1,59 @@
+import unittest 
+from grid import Grid
+
+class Test_neighbours(unittest.TestCase):
+
+#limited tests
+
+    def test_grid0_permutations(self):
+        grid = Grid.grid_from_file("input/grid0.in")
+        self.assertEqual(len(grid.permutations()), 24)
+
+    def test_grid1_permutations(self):
+        grid = Grid.grid_from_file("input/grid1.in")
+        self.assertEqual(len(grid.permutations()), 40320)
+
+    def test_grid2_permutations(self):
+        grid = Grid.grid_from_file("input/grid2.in")
+        self.assertEqual(len(grid.permutations()), 362880)
+    
+    def test_grid0_adj_state(self):
+        grid = Grid.grid_from_file("input/grid0.in")
+        dict=grid.adj_state()
+        self.assertEqual(dict[(0,0)],[(1,0),(0,1)] )
+        self.assertEqual(dict[(0,1)],[(0,0),(1,1)] )
+        self.assertEqual(dict[(1,0)],[(0,0),(1,1)] )
+        self.assertEqual(dict[(1,1)],[(0,1),(1,0)])
+
+    def test_grid1_adj_state(self):
+        grid = Grid.grid_from_file("input/grid1.in")
+        dict=grid.adj_state()
+        self.assertEqual(dict[(0,0)],[(1,0),(0,1)] )
+        self.assertEqual(dict[(1,0)],[(0,0),(2,0),(1,1)] )
+        self.assertEqual(dict[(2,0)],[(1,0),(3,0),(2,1)] )
+        self.assertEqual(dict[(3,0)],[(2,0),(3,1)])
+        self.assertEqual(dict[(0,1)],[(0,0),(1,1)])
+        self.assertEqual(dict[(1,1)],[(0,1),(1,0),(2,1)])
+        self.assertEqual(dict[(2,1)],[(1,1),(2,0),(3,1)])
+        self.assertEqual(dict[(3,1)],[(2,1),(3,0)])
+    
+    def test_grid0_adj_grids(self):
+        grid = Grid.grid_from_file("input/grid0.in")
+        list=grid.adj_grids()
+        grid0=list[0]
+        grid1=list[1]
+        self.assertEqual(grid0.state,[[3,4],[2,1]])
+        self.assertEqual(grid1.state,[[4,2],[3,1]])
+        self.assertEqual(len(list),8)
+    
+    def test_grid1_adj_grids(self):
+        grid = Grid.grid_from_file("input/grid1.in")
+        list=grid.adj_grids()
+        grid0=list[0]
+        grid1=list[1]
+        self.assertEqual(grid0.state,[[3,2],[1,4],[5,6],[8,7]])
+        self.assertEqual(grid1.state,[[2,1],[3,4],[5,6],[8,7]])
+        self.assertEqual(len(list),20)
+
+if __name__ == '__main__':
+    unittest.main()
