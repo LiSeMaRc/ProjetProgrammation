@@ -1,5 +1,6 @@
 from grid import Grid
 from graph import Graph
+import heapq
 
 class Solver(Grid): 
     """
@@ -117,5 +118,82 @@ class Solver(Grid):
         return None                      
                             
 
+    def a_star(self):
+        """
+        
+        """
+        #noeud source et d'arrivée sous forme de tuple
+        src=self.node()
+        dst=tuple(range(1,self.n*self.m+1))
 
+        #List composée de tuples (coût, noeud sous forme de tuple)
+        open_list=[(self.heuristic(src),src)]
 
+        #On modifie la liste pour trier par coût croissant
+        heapq.heapify(open_list)
+
+        #Liste des noeuds visités sous forme de tuple
+        closed_list=[]
+
+        #Dictionnaire qui à chaque noeud sous forme de tuple associe son coût
+        cost={src:self.heuristic(src)}
+
+        #Dictionnaire qui à chaque noeud associe le coût réel, i.e. le coût qui le sépare du noeud source
+        src_cost={src:0}
+
+        #Dictionnaire qui à chaque noeud associe noeud précédent
+        previous_nodes={}
+
+        #Liste des noeuds parcourus dans chemin optimal
+        path=[dst]
+
+        #Condition de sortie précoce: A EFFACER
+        counter=2
+        
+
+        while len(open_list)>0:
+            c,ext_node=heapq.heappop(open_list) #premier élément de la liste, c=coût, n=node sous forme de tuple
+            print("ext_node",ext_node)
+            print("dst",dst)
+            print(ext_node==dst)
+            if ext_node==dst: #tuples
+                p=ext_node
+                while p !=src:
+                    if counter==12:
+                        break
+                    path.insert(0,previous_nodes[p])
+                    print("p",p,"previous",previous_nodes[p])
+                    p=previous_nodes[p]
+                    print("nouveau p",p)
+                    counter=counter+1
+                print(path) 
+                list=path
+                list_swap=[]
+         
+                for i in range (len(list)-1):
+                    (a,b)=(-1,-1)
+                    for k in range(self.m):
+                        for l in range(0,self.n):
+                            if list[i][k*self.n+l]!=list[i+1][k*self.n+l]:
+                                if(a,b)==(-1,-1):
+                                    (a,b)=(k,l)
+                                else:
+                                    list_swap.append(((a,b),(k,l)))
+                return list_swap
+            else:
+              for grid in Grid.adj_grids(Grid(self.m,self.n,Grid.grid_from_tuple(ext_node,self.m,self.n))): #adj_grids s'applique à une grille
+                  node=grid.node() #on retransforme grille en tuple
+                  
+                #Traitement du noeud s'il n'a pas déjà été visité ou s'il a été visité avec un coût supérieur
+                  if node not in closed_list or cost[node]>src_cost[ext_node]+1:
+                      #Actualisation du dictionnaire src_cost:
+                      src_cost[node]=src_cost[ext_node]+1
+                      #Ajout du tuple (coût,noeud) à la file
+                      node_cost=src_cost[node]+self.heuristic(node)
+                      heapq.heappush(open_list,(node_cost,node)) 
+                      #Ajout du noeud à la liste des noeuds visités
+                      closed_list.append(node)
+                      #Actualisation du dictionnaire avec coût du noeud
+                      cost[node]=node_cost
+                      #Actualisation du dico previous nodes
+                      previous_nodes[node]=ext_node

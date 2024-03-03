@@ -1,0 +1,30 @@
+import unittest 
+from grid import Grid
+from solver import Solver
+
+class Test_a_star(unittest.TestCase):
+
+    def test_grid0(self):
+        grid = Grid.grid_from_file("input/grid0.in")
+        list=Solver.a_star(grid)
+        grid.swap_seq(list)
+        self.assertTrue(grid.is_sorted())
+        self.assertEqual(len(list),2)
+
+    def test_grid1(self):
+        grid = Grid.grid_from_file("input/grid1.in")
+        list=Solver.a_star(grid)
+        grid.swap_seq(list)
+        self.assertTrue(grid.is_sorted())
+        self.assertEqual(len(list),1)
+    
+    def test_grid2(self):
+        grid = Grid.grid_from_file("input/grid2.in")
+        list=Solver.a_star(grid)
+        grid.swap_seq(list)
+        self.assertTrue(grid.is_sorted())
+        self.assertEqual(len(list),4)
+
+
+if __name__ == '__main__':
+    unittest.main()
