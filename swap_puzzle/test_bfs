@@ -1,23 +1,84 @@
 import unittest 
 from graph import Graph
 from grid import Grid
+from solver import Solver
 
 class Test_bfs(unittest.TestCase):
 
 
     def test_graph1_graph(self):
-        graph = Graph.graph_from_file("input/graph1.in")
+        graph = Graph.graph_from_file("input\\graph1.in")
         lengths=[]
         count=0
-        file=open("C:\\Users\\lisem\\OneDrive\\Documents\\ENSAE\\1A\\ensae-prog24\\input\\graph1.path.out", "r")
+        file=open("input\\graph1.path.out", "r")
+        for line in file:
+            elements=line.split()
+            lengths.append(int(elements[2]))
+        for i in range(1,20):
+            for j in range(i+1,21):
+                self.assertEqual(len(graph.bfs(i,j))-1, lengths[count])
+                count=count+1
+    
+    def test_graph2_graph(self):
+        graph = Graph.graph_from_file("input\\graph2.in")
+        lengths=[]
+        count=0
+        file=open("input\\graph2.path.out", "r")
         for line in file:
             elements=line.split()
             lengths.append(elements[2])
-        for i in range(1,20):
-            for j in range(i+1,21):
-                self.assertEqual(len(graph.bfs(i,j)), lengths[count])
+        for i in range(1,2):
+            for j in range(i+1,10):
+                if lengths[count]=="None":
+                    self.assertEqual(graph.bfs(i,j), None)
+                else:
+                    self.assertEqual(str(len(graph.bfs(i,j))-1), lengths[count])    
                 count=count+1
 
+    def test_grid0_bfs(self):
+        #comment tester que plus court chemin?
+        grid = Grid.grid_from_file("input/grid0.in")
+        list=Solver.bfs_solution(grid)
+        grid.swap_seq(list)
+        self.assertTrue(grid.is_sorted())
+  
+    def test_grid1_bfs(self):
+        #comment tester que plus court chemin?
+        grid = Grid.grid_from_file("input/grid1.in")
+        list=Solver.bfs_solution(grid)
+        grid.swap_seq(list)
+        self.assertTrue(grid.is_sorted())
+    
+    """
+    def test_grid2_bfs(self):
+        #comment tester que plus court chemin?
+        #ne tourne pas
+        grid = Grid.grid_from_file("input/grid2.in")
+        list=Solver.bfs_solution(grid)
+        grid.swap_seq(list)
+        self.assertTrue(grid.is_sorted())
+    """
+    def test_grid0_short_bfs(self):
+        #comment tester que plus court chemin?
+        grid = Grid.grid_from_file("input/grid0.in")
+        list=Solver.short_bfs_solution(grid)
+        grid.swap_seq(list)
+        self.assertTrue(grid.is_sorted())
+
+    
+    def test_grid1_short_bfs(self):
+        #comment tester que plus court chemin?
+        grid = Grid.grid_from_file("input/grid1.in")
+        list=Solver.short_bfs_solution(grid)
+        grid.swap_seq(list)
+        self.assertTrue(grid.is_sorted())
+
+    def test_grid2_short_bfs(self):
+        #comment tester que plus court chemin?
+        grid = Grid.grid_from_file("input/grid2.in")
+        list=Solver.short_bfs_solution(grid)
+        grid.swap_seq(list)
+        self.assertTrue(grid.is_sorted())
 
 
 if __name__ == '__main__':

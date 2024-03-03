@@ -7,19 +7,19 @@ class Test_SimpleSolution(unittest.TestCase):
 
     def test_grid0(self):
         grid = Grid.grid_from_file("input/grid0.in") 
-        list=Solver.get_solution(grid)
+        list=Solver.simple_solution(grid)
         grid.swap_seq(list)
         self.assertTrue(grid.is_sorted)
     
     def test_grid1(self):
         grid = Grid.grid_from_file("input/grid1.in") 
-        list=Solver.get_solution(grid)
+        list=Solver.simple_solution(grid)
         grid.swap_seq(list)
         self.assertTrue(grid.is_sorted)
     
     def test_grid2(self):
         grid = Grid.grid_from_file("input/grid2.in") 
-        list=Solver.get_solution(grid)
+        list=Solver.simple_solution(grid)
         grid.swap_seq(list)
         self.assertTrue(grid.is_sorted)
 
