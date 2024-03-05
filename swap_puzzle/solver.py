@@ -146,26 +146,31 @@ class Solver(Grid):
 
         #Liste des noeuds parcourus dans chemin optimal
         path=[dst]
-
-        #Condition de sortie précoce: A EFFACER
-        counter=2
-        
+        counter=0
 
         while len(open_list)>0:
-            c,ext_node=heapq.heappop(open_list) #premier élément de la liste, c=coût, n=node sous forme de tuple
-            print("ext_node",ext_node)
-            print("dst",dst)
-            print(ext_node==dst)
+            counter=counter+1
+            
+            
+            c,ext_node=heapq.heappop(open_list)
+            print("\n========================")
+            # print(open_list[:10])
+            print("Selected node:", c, ext_node)
+            print("open_list:", open_list)
+            input()
+            #premier élément de la liste, c=coût, n=node sous forme de tuple
+            # print(open_list)
+            # print("ext_node",ext_node)
+            # print("dst",dst)
+            # print(ext_node==dst)
             if ext_node==dst: #tuples
                 p=ext_node
                 while p !=src:
-                    if counter==12:
-                        break
                     path.insert(0,previous_nodes[p])
-                    print("p",p,"previous",previous_nodes[p])
+                    #print("p",p,"previous",previous_nodes[p])
                     p=previous_nodes[p]
-                    print("nouveau p",p)
-                    counter=counter+1
+                    #print("nouveau p",p)
+                    
                 print(path) 
                 list=path
                 list_swap=[]
@@ -185,15 +190,31 @@ class Solver(Grid):
                   node=grid.node() #on retransforme grille en tuple
                   
                 #Traitement du noeud s'il n'a pas déjà été visité ou s'il a été visité avec un coût supérieur
-                  if node not in closed_list or cost[node]>src_cost[ext_node]+1:
+                  if node not in closed_list or src_cost[node]>src_cost[ext_node]+1:
+                      
+                    #   if node in closed_list:
+                    #       print("Last src_cost", src_cost[node])
                       #Actualisation du dictionnaire src_cost:
                       src_cost[node]=src_cost[ext_node]+1
+
+                    #   if node in closed_list:
+                    #       print("New src_cost", src_cost[node])
+                    #       print()
+
                       #Ajout du tuple (coût,noeud) à la file
                       node_cost=src_cost[node]+self.heuristic(node)
+
+                    #   print("node",node)
+                    #   print("node cost", src_cost[node], src_cost[ext_node]+1, node_cost)
+                      if node in closed_list:
+                          open_list
                       heapq.heappush(open_list,(node_cost,node)) 
+                      
                       #Ajout du noeud à la liste des noeuds visités
                       closed_list.append(node)
                       #Actualisation du dictionnaire avec coût du noeud
                       cost[node]=node_cost
                       #Actualisation du dico previous nodes
                       previous_nodes[node]=ext_node
+                      #print("previous node fin",previous_nodes[node])
+        return None              

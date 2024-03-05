@@ -228,7 +228,7 @@ class Grid():
         node: node is a tuple
         
         """
-
+        
         #Création de deux objets grilles pour accéder à l'attribut state
         grid1=Grid(self.m,self.n,Grid.grid_from_tuple(node,self.m,self.n))
         grid2=Grid(self.m,self.n,Grid.grid_from_tuple(tuple(range(1,self.n*self.m+1)),self.m,self.n))
@@ -251,6 +251,7 @@ class Grid():
                             exit=True #ne semble pas fonctionner
         counter_swap=counter_swap/2
         return counter_swap
+        
         
     
 
@@ -326,6 +327,10 @@ class Grid():
             return list_swap
         else:
             raise Exception("Grid not in the format 1*n")
+    
+    def k_n(self):
+        #Générer une grille qui augmente 
+        list=random.randint
 
 
                       

@@ -1,7 +1,8 @@
 #Imports
 from graph import Graph
 from grid import Grid
-from solver import Solver
+from solver import 
+from interface import Interface 
 
 
 
@@ -46,8 +47,37 @@ print("Question 8, grid2",Grid.resolution_short(Grid.grid_from_file("input\\grid
 #Question 9: A star
 #print("Question 9, grid0",Grid.a_star(Grid.grid_from_file("input\\grid0.in")))
 #print("Question 9, grid1",Grid.a_star(Grid.grid_from_file("input\\grid1.in")))
-
+"""
 print("Question 8, grid2",Solver.a_star(Grid.grid_from_file("input\\grid2.in")))
+grid=Grid.grid_from_file("input\\grid2.in")
+grid.swap_seq([((0,0),(1,0)),((1,0),(2,0)),((1,1),(2,1)),((0,1),(1,1))])
+print(grid.is_sorted())
+"""
+
+#grid=Grid(5, 5, [[1,3,2,4,10], [6,8,7,9,5], [12,11,13,14,20], [16,17,18,19,15],[21,22,23,24,25]])
+#print(Solver.a_star(grid))
+
+#grid=Grid(5, 5, [[1,3,2,4,17], [6,5,8,7,18], [12,11,13,15,19], [9,14,16,10,20],[25,24,23,22,21]])
+#print(Solver.a_star(grid))
+# print(len(Solver.simple_solution(grid)))
+#print(Solver.short_bfs_solution(grid))
+grid=Grid(6, 6, [[34, 20, 26, 1, 25, 13], [12, 35, 11, 31, 7, 27], [6, 2, 17, 36, 30, 21], [9, 29, 8, 3, 16, 18], [32, 15, 4, 22, 14, 19], [24, 33, 23,10,28,5]])
+#print(Solver.a_star(grid))
+print(len(Solver.simple_solution(grid)))
+                                                                                                                               
+
+"""
+grid=Grid.grid_from_file("input\\grid0.in")
+print(Solver.a_star(grid))
+
+grid=Grid.grid_from_file("input\\grid1.in")
+print(Solver.a_star(grid))
+
+grid=Grid.grid_from_file("input\\grid2.in")
+print(Solver.a_star(grid))
+"""
+
+
 #grid=Grid(6, 6, [[34, 20, 26, 1, 25, 13], [12, 35, 11, 31, 7, 27], [6, 2, 17, 36, 30, 21], [9, 29, 8, 3, 16, 18], [32, 15, 4, 22, 14, 19], [24, 33, 23,10,28,5]])
 #print("Question 9, grid2",grid.a_star())
 
