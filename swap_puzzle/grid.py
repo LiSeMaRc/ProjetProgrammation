@@ -58,6 +58,7 @@ class Grid():
         if not initial_state:
             initial_state = [list(range(i*n+1, (i+1)*n+1)) for i in range(m)]            
         self.state = initial_state
+        self.node=self.calculate_node()
 
     def __str__(self): 
         """
@@ -97,7 +98,7 @@ class Grid():
         return sorted
 
 
-    def swap(self, cell1, cell2):
+    def swap(self, cell1, cell2,calc_node=True):
         """
         Implements the swap operation between two cells. Raises an exception if the swap is not allowed. 
         Returns the state of the list if the swap is valid.
@@ -107,6 +108,7 @@ class Grid():
         cell1, cell2: tuple[int]
             The two cells to swap. They must be in the format (i, j) where i is the line and j the column number of the cell. 
         """
+        
         i,j=cell1
         k,l=cell2
         if abs(i-k)+abs(j-l)==1:
@@ -114,6 +116,8 @@ class Grid():
             b=self.state[k][l]
             self.state[i][j]=b
             self.state[k][l]=a
+            if calc_node==True:
+                self.node=self.calculate_node()
             return self.state 
         else:
             raise Exception("The swap is invalid")
@@ -147,7 +151,7 @@ class Grid():
         plt.show()
 
     
-    def node(self): 
+    def calculate_node(self): 
         """
         Represents a grid as a node.
         The node is represented by a tuple, which is a hashable but also ranked object.
@@ -184,7 +188,7 @@ class Grid():
         Represents the possible states of the grid, which are the different ways to organise n*m elements.
         It returns a liste of tuples, that is to say of grids as nodes. 
         """
-        permutations=list(itertools.permutations(self.node()))
+        permutations=list(itertools.permutations(self.node))
         return permutations 
 
     def adj_state(self):
@@ -217,9 +221,10 @@ class Grid():
         dict=self.adj_state()
         for k in dict.keys():
             for l in dict[k]:
-                self.swap(k,l)
+                self.swap(k,l,False)
                 adj.append(Grid(self.m,self.n,copy.deepcopy(self.state)))
-                self.swap(k,l)
+                self.swap(k,l,False)
+        self.node=self.calculate_node()
         return adj
     #Complexity: nm
     
@@ -237,22 +242,14 @@ class Grid():
         grid1=Grid(self.m,self.n,Grid.grid_from_tuple(node,self.m,self.n))
         grid2=Grid(self.m,self.n,Grid.grid_from_tuple(tuple(range(1,self.n*self.m+1)),self.m,self.n))
 
-        #Parcours de toutes les cellules des grilles par leur contenu
         counter_swap=0
-        for k in range (1,self.m*self.n+1):
-            m2=(k-1)//self.n
-            n2=(k-1)%self.n
-            exit=False
-        #Parcours de toutes les cellules des grilles par leurs coordonnées 
-            while exit==False:
-                for i in range (self.m):
-                    for j in range (self.n):    
-                        #Stockage des coordonnées de k dans grid1 sous m1 et n1
-                        if grid1.state[i][j]==k:
-                            m1=i
-                            n1=j
-                            counter_swap=counter_swap+abs(m2-m1)+abs(n2-n1)
-                            exit=True #ne semble pas fonctionner
+
+        for i in range (self.m):
+            for j in range (self.n): 
+                k=self.state[i][j]
+                m2=(k-1)//self.n
+                n2=(k-1)%self.n
+                counter_swap=counter_swap+abs(m2-i)+abs(n2-j)
         counter_swap=counter_swap/2
         return counter_swap
         

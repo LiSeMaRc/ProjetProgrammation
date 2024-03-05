@@ -7,7 +7,7 @@ class Solver(Grid):
     A solver class, to be implemented.
     """
     def __init__(self, m, n, initial_state = []):
-        super().__init__(m, n, initial_state = [])
+        super().__init__(m, n, initial_state)
     
     def simple_solution(self):
         """
@@ -123,23 +123,28 @@ class Solver(Grid):
         
         """
         #noeud source et d'arrivée sous forme de tuple
-        src=self.node()
+        src=self.node
         dst=tuple(range(1,self.n*self.m+1))
+        print(src,dst)
 
         #List composée de tuples (coût, noeud sous forme de tuple)
         open_list=[(self.heuristic(src),src)]
+        print(open_list)
 
         #On modifie la liste pour trier par coût croissant
         heapq.heapify(open_list)
 
         #Liste des noeuds visités sous forme de tuple
         closed_list=[]
+        print(closed_list)
 
         #Dictionnaire qui à chaque noeud sous forme de tuple associe son coût
         cost={src:self.heuristic(src)}
+        print(cost)
 
         #Dictionnaire qui à chaque noeud associe le coût réel, i.e. le coût qui le sépare du noeud source
         src_cost={src:0}
+        print(src_cost)
 
         #Dictionnaire qui à chaque noeud associe noeud précédent
         previous_nodes={}
@@ -147,9 +152,12 @@ class Solver(Grid):
         #Liste des noeuds parcourus dans chemin optimal
         path=[dst]
         counter=0
+        print(counter)
 
         while len(open_list)>0:
             counter=counter+1
+            if counter%10==0:
+                print(len(closed_list))
             
             
             c,ext_node=heapq.heappop(open_list)
@@ -187,7 +195,7 @@ class Solver(Grid):
                 return list_swap
             else:
               for grid in Grid.adj_grids(Grid(self.m,self.n,Grid.grid_from_tuple(ext_node,self.m,self.n))): #adj_grids s'applique à une grille
-                  node=grid.node() #on retransforme grille en tuple
+                  node=grid.node #on retransforme grille en tuple
                   
                 #Traitement du noeud s'il n'a pas déjà été visité ou s'il a été visité avec un coût supérieur
                   if node not in closed_list or src_cost[node]>src_cost[ext_node]+1:

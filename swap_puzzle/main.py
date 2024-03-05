@@ -1,8 +1,8 @@
 #Imports
 from graph import Graph
 from grid import Grid
-from solver import 
-from interface import Interface 
+from solver import Solver
+#from interface import Interface 
 
 
 
@@ -61,9 +61,12 @@ print(grid.is_sorted())
 #print(Solver.a_star(grid))
 # print(len(Solver.simple_solution(grid)))
 #print(Solver.short_bfs_solution(grid))
-grid=Grid(6, 6, [[34, 20, 26, 1, 25, 13], [12, 35, 11, 31, 7, 27], [6, 2, 17, 36, 30, 21], [9, 29, 8, 3, 16, 18], [32, 15, 4, 22, 14, 19], [24, 33, 23,10,28,5]])
-#print(Solver.a_star(grid))
-print(len(Solver.simple_solution(grid)))
+grid=Solver(6, 6, [[1,2,3,4,5,12], [8,7,9, 10, 11, 62], [13,14,15,17,16,18], [24,20,21,22,23,19], [25,26,27,28,29,30], [31,32,33,34,35,36]])
+print(grid.a_star())
+#print(len(Solver.simple_solution(grid)))
+#solver=Solver(6, 6, [[34, 20, 26, 1, 25, 13], [12, 35, 11, 31, 7, 27], [6, 2, 17, 36, 30, 21], [9, 29, 8, 3, 16, 18], [32, 15, 4, 22, 14, 19], [24, 33, 23,10,28,5]])
+#print(solver.is_sorted())
+#print(solver.short_bfs_solution())
                                                                                                                                
 
 """
