@@ -1,8 +1,11 @@
 from grid import Grid
+from solver import Solver
 
 import pygame 
 
 import random
+
+from math import sqrt
 
 pygame.init()
 
@@ -16,7 +19,7 @@ class Interface(Grid):
         self.height=height
         self.cell_size=(self.width-200)//max(self.m,self.n),(self.height-200)//max(self.m,self.n)
     
-    def draw_menu(self):
+    def start(self):
 
         #Colours
         global window_color
@@ -58,65 +61,36 @@ class Interface(Grid):
         Deux questions: manière plus simple avec boucle? et je voulais le mettre dans une fonction mais pb de reconnaissance de l'objet rect1 même avec un return
         """
         #Creation of rectangles
-        space=((self.width-100)//5)%rect_size[0]
+        space=((self.width-200)-3*rect_size[0])//2
         global rect1
-        rect1=pygame.Rect((50,4*self.height//10),rect_size)
+        rect1=pygame.Rect((100,self.height//2-rect_size[1]),rect_size)
         global rect2
-        rect2=pygame.Rect((50+rect_size[0]+space,4*self.height//10),rect_size)
+        rect2=pygame.Rect((100+rect_size[0]+space,self.height//2-rect_size[1]),rect_size)
         global rect3
-        rect3=pygame.Rect((50+2*(rect_size[0]+space),4*self.height//10),rect_size)
-        global rect4
-        rect4=pygame.Rect((50+3*(rect_size[0]+space),4*self.height//10),rect_size)
-        global rect5
-        rect5=pygame.Rect((50+4*(rect_size[0]+space),4*self.height//10),rect_size)
-        global rect6
-        rect6=pygame.Rect((50,6*self.height//10),rect_size)
-        global rect7
-        rect7=pygame.Rect((50+rect_size[0]+space,6*self.height//10),rect_size)
-        global rect8
-        rect8=pygame.Rect((50+2*(rect_size[0]+space),6*self.height//10),rect_size)
-        global rect9
-        rect9=pygame.Rect((50+3*(rect_size[0]+space),6*self.height//10),rect_size)
-        global rect10
-        rect10=pygame.Rect((50+4*(rect_size[0]+space),6*self.height//10),rect_size)
+        rect3=pygame.Rect((100+2*(rect_size[0]+space),self.height//2-rect_size[1]),rect_size)
+        
 
         #Drawing of rectangles
         pygame.draw.rect(window,rect_color,rect1)
         pygame.draw.rect(window,rect_color,rect2)
         pygame.draw.rect(window,rect_color,rect3)
-        pygame.draw.rect(window,rect_color,rect4)
-        pygame.draw.rect(window,rect_color,rect5)
-        pygame.draw.rect(window,rect_color,rect6)
-        pygame.draw.rect(window,rect_color,rect7)
-        pygame.draw.rect(window,rect_color,rect8) 
-        pygame.draw.rect(window,rect_color,rect9)
-        pygame.draw.rect(window,rect_color,rect10)
+
 
         #Creation of the text    
         text1=font.render("Level1",True,white)
         text2=font.render("Level2",True,white)
         text3=font.render("Level3",True,white)
-        text4=font.render("Level4",True,white)
-        text5=font.render("Level5",True,white)
-        text6=font.render("Level6",True,white)
-        text7=font.render("Level7",True,white)
-        text8=font.render("Level8",True,white)
-        text9=font.render("Level9",True,white)
-        text10=font.render("Level10",True,white)
+
 
         #Writing of the text
         window.blit(text1,(rect1.x+rect_size[0]//10,rect1.y+rect_size[1]//2-5))
         window.blit(text2,(rect2.x+rect_size[0]//10,rect2.y+rect_size[1]//2-5))
         window.blit(text3,(rect3.x+rect_size[0]//10,rect3.y+rect_size[1]//2-5))
-        window.blit(text4,(rect4.x+rect_size[0]//10,rect4.y+rect_size[1]//2-5))
-        window.blit(text5,(rect5.x+rect_size[0]//10,rect5.y+rect_size[1]//2-5))
-        window.blit(text6,(rect6.x+rect_size[0]//10,rect6.y+rect_size[1]//2-5))
-        window.blit(text7,(rect7.x+rect_size[0]//10,rect7.y+rect_size[1]//2-5))
-        window.blit(text8,(rect8.x+rect_size[0]//10,rect8.y+rect_size[1]//2-5))
-        window.blit(text9,(rect9.x+rect_size[0]//10,rect9.y+rect_size[1]//2-5))
-        window.blit(text10,(rect10.x+rect_size[0]//14,rect10.y+rect_size[1]//2-5))
+
 
         pygame.display.update()
+        Interface.choose_level(self)
+        pygame.time.delay(10000)
     
     def draw_grid(self):
 
@@ -124,7 +98,9 @@ class Interface(Grid):
 
         #Instructions:
         text=text_font.render("Solve this swap puzzle in a minimum time",True,white)
+        rules=font.render("Don't swap diagonal cells and avoid obstacles or you will lose",True,white)
         window.blit(text,(50,30))
+        window.blit(rules,(50,70))
 
         #horizontal lines
         for i in range(self.m+1): 
@@ -141,13 +117,51 @@ class Interface(Grid):
                 window.blit(text, (100+j*self.cell_size[0] + self.cell_size[0]//2-1, 100+i*self.cell_size[1] + self.cell_size[1]//2-1))
     
         pygame.display.update()
+        
     
-    def swap_cells(self):
+    def obstacle(self,number):
+        """
+        Returns a list of invalid swaps in the format [((i,j),(i+1),j)]
+
+        Parameters
+        -----------------------
+        Number: between 1, 2, 3
+        """
+        red=(255, 87, 51)
+        list_obstacles=[]
+        if number==1:
+            return list_obstacles
+        elif number==2: 
+            i=random.randint(0,self.m-2)
+            j=random.randint(0,self.n-1) 
+            list_obstacles.append(((i,j),(i+1,j)))
+            pygame.draw.line(window, red, (100+j * self.cell_size[0],100+(i+1) * self.cell_size[1]), (100+(j+1) * self.cell_size[0],100+(i+1) * self.cell_size[1]))
+            pygame.display.update()
+            return list_obstacles
+        elif number==3:
+            i=random.randint(0,self.m-2)
+            j=random.randint(0,self.n-1)
+            k=random.randint(0,self.m-1)
+            l=random.randint(0,self.n-2)
+            list_obstacles.append(((i,j),(i+1,j)))
+            list_obstacles.append(((k,l),(k,l+1)))
+            pygame.draw.line(window, red, (100+j * self.cell_size[0],100+(i+1) * self.cell_size[1]), (100+(j+1) * self.cell_size[0],100+(i+1) * self.cell_size[1]))
+            pygame.draw.line(window, red, (100+(l+1) * self.cell_size[0],100+k * self.cell_size[1]), (100+(l+1) * self.cell_size[0],100+(k+1) * self.cell_size[1]))
+            pygame.display.update()
+            return list_obstacles
+        else:
+            raise Exception("There can be only one or two obstacles.")
+            
+            
+
+    
+    def swap_cells(self,number):
+
         exit=False
         cell_to_swap=None
         list_swap=[]
-        length=len(self.a_star())
-        print("length",length)
+        list_obstacles=self.obstacle(number)
+        length=len(Solver.a_star(self))
 
         while not exit:
             for event in pygame.event.get():
@@ -158,47 +172,43 @@ class Interface(Grid):
                         x,y=pygame.mouse.get_pos()
                         col=(x-100)//self.cell_size[0]
                         row=(y-100)//self.cell_size[1]
-                        print(row,col)
                         #Premier ou deuxième clic?
                         if cell_to_swap==None:
-                            print("case1")
                             cell_to_swap=(row,col)
                         else: 
-                            print("case2")
-                            #Modification of state[i][j]
-                            self.swap((row,col),cell_to_swap) #add error message if swap not allowed?
-                            print("après swap",self.state)
-                            #Shortest way?  
-                            list_swap.append(((row,col),cell_to_swap))
-                            #Sorted grid?
-                            print(self.node()==tuple(range(1,self.n*self.m+1)))
+                            if (cell_to_swap,(row,col)) not in list_obstacles and ((row,col),cell_to_swap) not in list_obstacles :
+                                
+                                #Modification of state[i][j]
+                                self.swap((row,col),cell_to_swap) #add error message if swap not allowed?
+                                #Shortest way?  
+                                list_swap.append(((row,col),cell_to_swap))
+                                #Sorted grid?
                             
-                            if self.node()==tuple(range(1,self.n*self.m+1)):
-                                print("entréeif 0")
-                                print(len(list_swap)==length)
-                                if len(list_swap)==length:
-                                    print("entrée if1")
-                                    print("étape 1")
-                                    window.fill(window_color)
-                                    text1=title_font.render("Congratulations!",True,black)
-                                    text2=font.render("You solved the grid in the shortest way possible!",True,black)
-                                    window.blit(text1,(50,150))
-                                    window.blit(text2,(50,300))
-                                    print("étape fin")
-                                    pygame.display.update()
-                                    pygame.time.delay(10000)
+                                if self.node()==tuple(range(1,self.n*self.m+1)):
+                                    if len(list_swap)==length:
+                                        window.fill(window_color)
+                                        text1=title_font.render("Congratulations!",True,black)
+                                        text2=font.render("You solved the grid in the shortest way possible!",True,black)
+                                        window.blit(text1,(50,150))
+                                        window.blit(text2,(50,300))
+                                        pygame.display.update()
+                                        pygame.time.delay(10000)
+                                    else:
+                                        window.fill(window_color)
+                                        text1=title_font.render("Congratulations!",True,black)
+                                        text2=font.render("You solved the grid with "+str(len(list_swap))+" swaps.",True,black)
+                                        text3=font.render("The optimal path contains "+str(length)+" swaps",True,black)
+                                        window.blit(text1,(50,150))
+                                        window.blit(text2,(50,250))
+                                        window.blit(text3,(50,350))
+                                        pygame.display.update()
                                 else:
-                                    window.fill(window_color)
-                                    text1=title_font.render("Congratulations!",True,black)
-                                    text2=font.render("You solved the grid with "+str(len(list_swap))+" swaps.",True,black)
-                                    text3=font.render("The optimal path contains "+str(length)+" swaps",True,black)
-                                    window.blit(text1,(50,150))
-                                    window.blit(text2,(50,250))
-                                    window.blit(text3,(50,350))
+                                    self.draw_grid()
+                                    list_obstacles=self.obstacle(number)
                                     pygame.display.update()
                             else:
-                                self.draw_grid()
-                                pygame.display.update()
+                                raise Exception("The swap is not valid.")
+
 
                             #Reinitialisation for the next couple of swaps
                             cell_to_swap=None
@@ -210,32 +220,27 @@ class Interface(Grid):
         There are two components of the difficulty level: 
         - Size of the table (level+1)^2. The number of rows and colums are generated randomly.
         - Number of swaps: level*2. The swaps are also generated randomly. 
+        Here only square grids
         
         Parameters:
         ------------------
-        level from 1 to 10
+        level from 1 to 3
+
         """
         #Difficulty: size of the grid
         size=(level+1)**2
+
+
+        #number of rows and columns
+        m=int(sqrt(size))
+        n=int(sqrt(size))
 
         #Sorted_list with the determined size
         sorted_list=[]
         for i in range (1,size+1):
             sorted_list.append(i)
 
-        #list of dividers of size 
-        list_div=[]
-        for i in range(1,size//2+1):
-            if size%i==0:
-                list_div.append(i)
-        list_div.append(size)
-        print("liste div",list_div)
-
-        #random but adequate number of rows and columns
-        m=random.choice(list_div)
-        n=int(size/m)
-
-        #création d'une grille
+        #Grid creation
         grid=Interface(m,n,Grid.grid_from_tuple(tuple(sorted_list),m,n),500,500)
 
         #génération aléatoire d'un nombre plus ou moins complexe de swaps
@@ -249,7 +254,6 @@ class Interface(Grid):
             tuple1=(t1,t2)
             tuple2=random.choice(dict[tuple1])
             cell_pair_list.append((tuple1,tuple2))
-        print("cell list",cell_pair_list,"len",len(cell_pair_list))
         
         grid.swap_seq(cell_pair_list)
 
@@ -271,53 +275,19 @@ class Interface(Grid):
                     if rect1.collidepoint(event.pos):
                         exit=True
                         grid=Interface.controlled_difficulty_bis(1)
-                        Interface.draw_grid(grid) #ne reconnaissait pas sinon
-                        Interface.swap_cells(grid)
+                        Interface.draw_grid(grid)
+                        Interface.swap_cells(grid,1)
                     elif rect2.collidepoint(event.pos):
                         exit=True
                         grid=Interface.controlled_difficulty_bis(2)
-                        Interface.draw_grid(grid) 
-                        Interface.swap_cells(grid)
+                        Interface.draw_grid(grid)
+                        Interface.swap_cells(grid,2)
                     elif rect3.collidepoint(event.pos):
                         exit=True                        
                         grid=Interface.controlled_difficulty_bis(3)
-                        Interface.draw_grid(grid) 
-                        Interface.swap_cells(grid)
-                    elif rect4.collidepoint(event.pos):
-                        exit=True
-                        grid=Interface.controlled_difficulty_bis(4)
-                        Interface.draw_grid(grid) 
-                        Interface.swap_cells(grid)
-                    elif rect5.collidepoint(event.pos):
-                        exit=True
-                        grid=Interface.controlled_difficulty_bis(5)
-                        Interface.draw_grid(grid) 
-                        Interface.swap_cells(grid)
-                    elif rect6.collidepoint(event.pos):
-                        exit=True
-                        grid=Interface.controlled_difficulty_bis(6)
-                        Interface.draw_grid(grid) 
-                        Interface.swap_cells(grid)
-                    elif rect7.collidepoint(event.pos):
-                        exit=True
-                        grid=Interface.controlled_difficulty_bis(7)
-                        Interface.draw_grid(grid) 
-                        Interface.swap_cells(grid)
-                    elif rect8.collidepoint(event.pos):
-                        exit=True
-                        grid=Interface.controlled_difficulty_bis(8)
-                        Interface.draw_grid(grid) 
-                        Interface.swap_cells(grid)
-                    elif rect9.collidepoint(event.pos):
-                        exit=True
-                        grid=Interface.controlled_difficulty_bis(9)
-                        Interface.draw_grid(grid) 
-                        Interface.swap_cells(grid)
-                    else:
-                        exit=True
-                        grid=Interface.controlled_difficulty_bis(10)
-                        Interface.draw_grid(grid) 
-                        Interface.swap_cells(grid)
+                        Interface.draw_grid(grid)
+                        Interface.swap_cells(grid,3)
+                    
 
 
 
@@ -357,7 +327,6 @@ class Interface(Grid):
 
                 
 
-#Interface.draw_menu(Interface.grid_from_file_bis("input\\grid2.in"))
-#Interface.choose_level(Interface.grid_from_file_bis("input\\grid2.in"))
+Interface.start(Interface.grid_from_file_bis("input\\grid2.in"))
 
-Interface.draw_grid(Interface.grid_from_file_bis("input\\grid0.in"))
+

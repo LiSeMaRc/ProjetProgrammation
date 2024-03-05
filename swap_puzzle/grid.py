@@ -132,6 +132,10 @@ class Grid():
         for k in cell_pair_list:
             self.swap(k[0],k[1])
     
+
+        
+
+    
     def graphic_representation(self):
         """
         Gives a graphic representation of the grid.
@@ -266,7 +270,7 @@ class Grid():
         
         Parameters:
         ------------------
-        level from 1 to 10
+        level from 1 to 3
         """
         #Difficulty: size of the grid
         size=(level+1)**2
@@ -282,7 +286,6 @@ class Grid():
             if size%i==0:
                 list_div.append(i)
         list_div.append(size)
-        print("liste div",list_div)
 
         #random but adequate number of rows and columns
         m=random.choice(list_div)
@@ -302,14 +305,11 @@ class Grid():
             tuple1=(t1,t2)
             tuple2=random.choice(dict[tuple1])
             cell_pair_list.append((tuple1,tuple2))
-        print("cell list",cell_pair_list,"len",len(cell_pair_list))
+        
         
         grid.swap_seq(cell_pair_list)
 
         return grid
-
-
-
 
                   
     def bubble_sort(self):
@@ -328,9 +328,7 @@ class Grid():
         else:
             raise Exception("Grid not in the format 1*n")
     
-    def k_n(self):
-        #Générer une grille qui augmente 
-        list=random.randint
+
 
 
                       

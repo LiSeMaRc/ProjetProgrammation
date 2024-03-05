@@ -1,0 +1,36 @@
+import unittest 
+from grid import Grid
+from solver import Solver
+
+class Test_bubble_sort(unittest.TestCase):
+
+    def test_grid0(self):
+        grid = Grid(1,4,[[1,3,4,2]])
+        list=Solver.bubble_sort(grid)
+        print(list)
+        Grid.swap_seq(grid,Solver.bubble_sort(grid)) #bizarre
+        print(grid)
+        self.assertTrue(grid.is_sorted())
+        self.assertEqual(len(list),2)
+    
+    def test_grid1(self):
+        grid = Grid(1,12,[[2,1,4,3,6,5,8,7,10,9,12,11]])
+        list=Solver.bubble_sort(grid)
+        print(list)
+        Grid.swap_seq(grid,Solver.bubble_sort(grid)) #bizarre
+        print(grid)
+        self.assertTrue(grid.is_sorted())
+        self.assertEqual(len(list),6)
+    
+    def test_exception(self):
+        grid0=Grid.grid_from_file("input/grid0.in")
+        grid1=Grid.grid_from_file("input/grid1.in")
+        grid2=Grid.grid_from_file("input/grid2.in")
+        with self.assertRaises(Exception):
+            Solver.bubble_sort(grid0)
+            Solver.bubble_sort(grid1)
+            Solver.bubble_sort(grid2)
+
+
+if __name__ == '__main__':
+    unittest.main()

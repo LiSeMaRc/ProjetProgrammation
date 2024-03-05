@@ -153,11 +153,11 @@ class Solver(Grid):
             
             
             c,ext_node=heapq.heappop(open_list)
-            print("\n========================")
+            #print("\n========================")
             # print(open_list[:10])
-            print("Selected node:", c, ext_node)
-            print("open_list:", open_list)
-            input()
+            #print("Selected node:", c, ext_node)
+            #print("open_list:", open_list)
+            #input()
             #premier élément de la liste, c=coût, n=node sous forme de tuple
             # print(open_list)
             # print("ext_node",ext_node)
@@ -206,8 +206,7 @@ class Solver(Grid):
 
                     #   print("node",node)
                     #   print("node cost", src_cost[node], src_cost[ext_node]+1, node_cost)
-                      if node in closed_list:
-                          open_list
+
                       heapq.heappush(open_list,(node_cost,node)) 
                       
                       #Ajout du noeud à la liste des noeuds visités
@@ -218,3 +217,20 @@ class Solver(Grid):
                       previous_nodes[node]=ext_node
                       #print("previous node fin",previous_nodes[node])
         return None              
+
+
+    def bubble_sort(self):
+        if self.m==1:
+            #transformation d'une double liste en simple liste
+            list=self.state[0]
+            list_swap=[]
+            for i in range(self.n-2):
+                for j in range (self.n-1-i):
+                    if list[j]>list[j+1]:
+                        self.swap((0,j),(0,j+1))
+                        list_swap.append(((0,j),(0,j+1)))
+                    
+            print(self.state)
+            return list_swap
+        else:
+            raise Exception("Grid not in the format 1*n")

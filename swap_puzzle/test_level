@@ -1,0 +1,35 @@
+import unittest 
+from grid import Grid
+from solver import Solver
+
+class Test_level(unittest.TestCase):
+
+    def test_level1(self):
+        counter=0
+        while counter<10:
+            counter=counter+1
+            grid=Grid.controlled_difficulty(1)
+            print(grid)
+            self.assertEqual(grid.m*grid.n,4)
+    
+    def test_level2(self):
+        counter=0
+        while counter<10:
+            counter=counter+1
+            grid=Grid.controlled_difficulty(2)
+            print(grid)
+            self.assertEqual(grid.m*grid.n,9)
+    
+    def test_level3(self):
+        counter=0
+        while counter<10:
+            counter=counter+1
+            grid=Grid.controlled_difficulty(3)
+            print(grid)
+            self.assertEqual(grid.m*grid.n,16)
+
+            
+
+
+if __name__ == '__main__':
+    unittest.main()
