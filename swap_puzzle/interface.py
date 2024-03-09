@@ -22,13 +22,14 @@ class Interface(Grid):
     def start(self):
 
         #Colours
-        global window_color
-        window_color=(175,211,227)
+
         global white
         white=(255,255,255)
         global black
         black=(0,0,0)
-        rect_color=(47,106,133)
+        rect_color=white
+        global window_color
+        window_color=black
 
         #Fonts
         global title_font
@@ -50,16 +51,13 @@ class Interface(Grid):
         #Title and instruction
         pygame.display.set_caption("Swap Puzzle") 
 
-        title_text=title_font.render("Swap puzzle",True,black)
+        title_text=title_font.render("Swap puzzle",True,white)
         window.blit(title_text,(25,25))
 
-        text=text_font.render("Choose your level of difficulty",True,black)
+        text=text_font.render("Choose your level of difficulty",True,white)
         window.blit(text,(25,75))
 
-        """
-        Draw the buttons corresponding to each level.
-        Deux questions: manière plus simple avec boucle? et je voulais le mettre dans une fonction mais pb de reconnaissance de l'objet rect1 même avec un return
-        """
+
         #Creation of rectangles
         space=((self.width-200)-3*rect_size[0])//2
         global rect1
@@ -77,9 +75,9 @@ class Interface(Grid):
 
 
         #Creation of the text    
-        text1=font.render("Level1",True,white)
-        text2=font.render("Level2",True,white)
-        text3=font.render("Level3",True,white)
+        text1=font.render("Level1",True,black)
+        text2=font.render("Level2",True,black)
+        text3=font.render("Level3",True,black)
 
 
         #Writing of the text
@@ -104,16 +102,16 @@ class Interface(Grid):
 
         #horizontal lines
         for i in range(self.m+1): 
-            pygame.draw.line(window, black, (100, 100+i * self.cell_size[1]), (100+self.n * self.cell_size[0], 100+i * self.cell_size[1]))
+            pygame.draw.line(window, white, (100, 100+i * self.cell_size[1]), (100+self.n * self.cell_size[0], 100+i * self.cell_size[1]))
 
         #vertical lines
         for j in range(self.n+1):
-            pygame.draw.line(window, black, (100+j * self.cell_size[0], 100), (100+j * self.cell_size[0], 100+self.m * self.cell_size[1]))
+            pygame.draw.line(window, white, (100+j * self.cell_size[0], 100), (100+j * self.cell_size[0], 100+self.m * self.cell_size[1]))
     
         #numbers
         for i in range(self.m):
             for j in range(self.n):
-                text=font.render(str(self.state[i][j]),True,black)
+                text=font.render(str(self.state[i][j]),True,white)
                 window.blit(text, (100+j*self.cell_size[0] + self.cell_size[0]//2-1, 100+i*self.cell_size[1] + self.cell_size[1]//2-1))
     
         pygame.display.update()
@@ -168,36 +166,41 @@ class Interface(Grid):
                 if event.type == pygame.QUIT:
                     exit = True
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    if event.button == 1: #clic gauche
+                    if event.button == 1: 
                         x,y=pygame.mouse.get_pos()
                         col=(x-100)//self.cell_size[0]
                         row=(y-100)//self.cell_size[1]
-                        #Premier ou deuxième clic?
+
+                        #First clic
                         if cell_to_swap==None:
                             cell_to_swap=(row,col)
+
+                        #Second clic
                         else: 
+
+                            #Allowed swap
                             if (cell_to_swap,(row,col)) not in list_obstacles and ((row,col),cell_to_swap) not in list_obstacles :
                                 
                                 #Modification of state[i][j]
-                                self.swap((row,col),cell_to_swap) #add error message if swap not allowed?
+                                self.swap((row,col),cell_to_swap) 
                                 #Shortest way?  
                                 list_swap.append(((row,col),cell_to_swap))
+
                                 #Sorted grid?
-                            
-                                if self.node()==tuple(range(1,self.n*self.m+1)):
+                                if self.node==tuple(range(1,self.n*self.m+1)):
                                     if len(list_swap)==length:
                                         window.fill(window_color)
-                                        text1=title_font.render("Congratulations!",True,black)
-                                        text2=font.render("You solved the grid in the shortest way possible!",True,black)
+                                        text1=title_font.render("Congratulations!",True,white)
+                                        text2=font.render("You solved the grid in the shortest way possible!",True,white)
                                         window.blit(text1,(50,150))
                                         window.blit(text2,(50,300))
                                         pygame.display.update()
                                         pygame.time.delay(10000)
                                     else:
                                         window.fill(window_color)
-                                        text1=title_font.render("Congratulations!",True,black)
-                                        text2=font.render("You solved the grid with "+str(len(list_swap))+" swaps.",True,black)
-                                        text3=font.render("The optimal path contains "+str(length)+" swaps",True,black)
+                                        text1=title_font.render("Congratulations!",True,white)
+                                        text2=font.render("You solved the grid with "+str(len(list_swap))+" swaps.",True,white)
+                                        text3=font.render("The optimal path contains "+str(length)+" swaps",True,white)
                                         window.blit(text1,(50,150))
                                         window.blit(text2,(50,250))
                                         window.blit(text3,(50,350))
@@ -205,13 +208,14 @@ class Interface(Grid):
                                 else:
                                     self.draw_grid()
                                     list_obstacles=self.obstacle(number)
+                                    cell_to_swap=None
                                     pygame.display.update()
                             else:
                                 raise Exception("The swap is not valid.")
 
 
                             #Reinitialisation for the next couple of swaps
-                            cell_to_swap=None
+                            
     
     @staticmethod
     def controlled_difficulty_bis(level):
@@ -327,6 +331,6 @@ class Interface(Grid):
 
                 
 
-Interface.start(Interface.grid_from_file_bis("input\\grid2.in"))
+
 
 

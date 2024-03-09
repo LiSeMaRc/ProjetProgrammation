@@ -1,3 +1,5 @@
+import sys 
+sys.path.append("swap_puzzle/")
 import unittest 
 from grid import Grid
 
@@ -5,30 +7,27 @@ class Test_Node(unittest.TestCase):
 
     def test_grid0(self):
         grid = Grid.grid_from_file("input/grid0.in")
-        self.assertEqual(grid.node(), (2,4,3,1))
+        self.assertEqual(grid.calculate_node(), (2,4,3,1))
     
     def test_grid1(self):
         grid = Grid.grid_from_file("input/grid1.in")
-        self.assertEqual(grid.node(), (1,2,3,4,5,6,8,7))
+        self.assertEqual(grid.calculate_node(), (1,2,3,4,5,6,8,7))
 
     def test_grid0(self):
         grid = Grid.grid_from_file("input/grid2.in")
-        self.assertEqual(grid.node(), (7,5,3,1,8,6,4,2,9))
+        self.assertEqual(grid.calculate_node(), (7,5,3,1,8,6,4,2,9))
 
     def test_tuple0(self):
         grid = Grid.grid_from_file("input/grid0.in")
-        node=grid.node()
-        self.assertEqual(Grid.grid_from_tuple(node,grid.m,grid.n), grid.state)
+        self.assertEqual(Grid.grid_from_tuple(grid.node,grid.m,grid.n), grid.state)
 
     def test_tuple1(self):
         grid = Grid.grid_from_file("input/grid1.in")
-        node=grid.node()
-        self.assertEqual(Grid.grid_from_tuple(node,grid.m,grid.n), grid.state)
+        self.assertEqual(Grid.grid_from_tuple(grid.node,grid.m,grid.n), grid.state)
     
     def test_tuple2(self):
         grid = Grid.grid_from_file("input/grid2.in")
-        node=grid.node()
-        self.assertEqual(Grid.grid_from_tuple(node,grid.m,grid.n), grid.state)
+        self.assertEqual(Grid.grid_from_tuple(grid.node,grid.m,grid.n), grid.state)
     
     def invalid_tuple(self):
         with self.assertRaises(Exception):

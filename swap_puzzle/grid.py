@@ -12,13 +12,11 @@ import copy
 
 from graph import Graph 
 
-import matplotlib.pyplot as plt
+import pygame
 
 import math
 
 
-
-import numpy as np
 
 
 
@@ -135,20 +133,43 @@ class Grid():
         """
         for k in cell_pair_list:
             self.swap(k[0],k[1])
-    
 
-        
-
-    
     def graphic_representation(self):
-        """
-        Gives a graphic representation of the grid.
-        """
-        grid=self.state
-        fig, ax=plt.subplots()
-        ax.set_axis_off()
-        ax.table(cellText=grid,cellLoc ='center')
-        plt.show()
+
+        pygame.init()
+        
+        #colors
+        black=(0,0,0)
+        white=(255,255,255)
+
+        #font
+        font=pygame.font.Font(None,20)
+
+        #Sizes:
+        width=500
+        height=500
+        cell_size=(width-200)//max(self.m,self.n),(height-200)//max(self.m,self.n)
+
+        #Creation of the window:
+        window = pygame.display.set_mode((width, height))
+        window.fill(black)
+
+        #horizontal lines
+        for i in range(self.m+1): 
+            pygame.draw.line(window, white, (100, 100+i * cell_size[1]), (100+self.n * cell_size[0], 100+i * cell_size[1]))
+
+        #vertical lines
+        for j in range(self.n+1):
+            pygame.draw.line(window, white, (100+j * cell_size[0], 100), (100+j *cell_size[0], 100+self.m * cell_size[1]))
+    
+        #numbers
+        for i in range(self.m):
+            for j in range(self.n):
+                text=font.render(str(self.state[i][j]),True,white)
+                window.blit(text, (100+j*cell_size[0] + cell_size[0]//2-1, 100+i*cell_size[1] + cell_size[1]//2-1))
+    
+        pygame.display.update() 
+        pygame.time.delay(10000) 
 
     
     def calculate_node(self): 
@@ -219,12 +240,11 @@ class Grid():
 
         adj=[]
         dict=self.adj_state()
-        for k in dict.keys():
-            for l in dict[k]:
-                self.swap(k,l,False)
-                adj.append(Grid(self.m,self.n,copy.deepcopy(self.state)))
-                self.swap(k,l,False)
-        self.node=self.calculate_node()
+        for k,v in dict.items():
+            for l in v:
+                g = Grid(self.m,self.n,copy.deepcopy(self.state))
+                g.swap(k,l)
+                adj.append(g)
         return adj
     #Complexity: nm
     
@@ -238,7 +258,7 @@ class Grid():
         
         """
         
-        #Création de deux objets grilles pour accéder à l'attribut state
+        #Creation of Grids to access the grid.state attribute
         grid1=Grid(self.m,self.n,Grid.grid_from_tuple(node,self.m,self.n))
         grid2=Grid(self.m,self.n,Grid.grid_from_tuple(tuple(range(1,self.n*self.m+1)),self.m,self.n))
 
@@ -246,30 +266,26 @@ class Grid():
 
         for i in range (self.m):
             for j in range (self.n): 
-                k=self.state[i][j]
+                k=grid1.state[i][j]
                 m2=(k-1)//self.n
                 n2=(k-1)%self.n
                 counter_swap=counter_swap+abs(m2-i)+abs(n2-j)
         counter_swap=counter_swap/2
         return counter_swap
-        
-        
-    
-
+ 
                     
     @staticmethod
     def controlled_difficulty(level):
         """
         Generates a grid with a controlled level of difficulty.
-        There are two components of the difficulty level: 
-        - Size of the table (level+1)^2. The number of rows and colums are generated randomly.
+        - Size of the table: (level+1)^2. The number of rows and colums are generated randomly.
         - Number of swaps: level*2. The swaps are also generated randomly. 
         
         Parameters:
         ------------------
-        level from 1 to 3
+        level from 1 to 3 (for the graphic interface)
         """
-        #Difficulty: size of the grid
+        #Size of the grid
         size=(level+1)**2
 
         #Sorted_list with the determined size
@@ -309,21 +325,7 @@ class Grid():
         return grid
 
                   
-    def bubble_sort(self):
-        if self.m==1:
-            #transformation d'une double liste en simple liste
-            list=self.state[0]
-            list_swap=[]
-            for i in range(self.n-2):
-                for j in range (self.n-1-i):
-                    if list[j]>list[j+1]:
-                        self.swap((0,j),(0,j+1))
-                        list_swap.append(((0,j),(0,j+1)))
-                    
-            print(self.state)
-            return list_swap
-        else:
-            raise Exception("Grid not in the format 1*n")
+
     
 
 

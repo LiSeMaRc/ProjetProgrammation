@@ -1,3 +1,5 @@
+import sys 
+sys.path.append("swap_puzzle/")
 from grid import Grid
 
 import unittest

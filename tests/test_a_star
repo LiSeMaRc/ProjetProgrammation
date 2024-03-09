@@ -1,3 +1,5 @@
+import sys 
+sys.path.append("swap_puzzle/")
 import unittest 
 from grid import Grid
 from solver import Solver
@@ -24,6 +26,14 @@ class Test_a_star(unittest.TestCase):
         grid.swap_seq(list)
         self.assertTrue(grid.is_sorted())
         self.assertEqual(len(list),4)
+    
+    def test_grid3(self):
+        grid=Solver(4,4,[[7,2,4,3],[6,5,8,1],[9,10,11,16],[14,13,15,12]])
+        list=Solver.a_star(grid)
+        grid.swap_seq(list)
+        self.assertTrue(grid.is_sorted())
+
+
 
 
 if __name__ == '__main__':
