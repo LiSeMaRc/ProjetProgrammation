@@ -272,6 +272,30 @@ class Grid():
                 counter_swap=counter_swap+abs(m2-i)+abs(n2-j)
         counter_swap=counter_swap/2
         return counter_swap
+
+    def heuristic_corners(self,node): 
+        """
+        Parameters:
+        ---
+        node: node is a tuple
+        
+        """
+        
+        #Creation of Grids to access the grid.state attribute
+        grid1=Grid(self.m,self.n,Grid.grid_from_tuple(node,self.m,self.n))
+        grid2=Grid(self.m,self.n,Grid.grid_from_tuple(tuple(range(1,self.n*self.m+1)),self.m,self.n))
+        
+        #This method counts the number of corners you have to turn on the way from one node to the next
+
+        for i in range (self.m):
+            for j in range (self.n): 
+                k=grid1.state[i][j]
+                m2=(k-1)//self.n
+                n2=(k-1)%self.n
+                horizontal_moves = abs(m2 - i)
+                vertical_moves = abs(n2 - j) 
+                corners = min(horizontal_moves, vertical_moves) 
+        return corners 
  
                     
     @staticmethod
