@@ -250,7 +250,7 @@ class Grid():
     
 
     
-    def heuristic(self,node): #en faire une méthode statique?
+    def heuristic(self,node): 
         """
         Parameters:
         ---
@@ -273,41 +273,7 @@ class Grid():
         counter_swap=counter_swap/2
         return counter_swap
 
-    def heuristic_corners(self,node): 
-        """
-        Parameters:
-        ---
-        node: node is a tuple
-        
-        """
-        
-        #Creation of Grids to access the grid.state attribute
-        grid1=Grid(self.m,self.n,Grid.grid_from_tuple(node,self.m,self.n))
-        grid2=Grid(self.m,self.n,Grid.grid_from_tuple(tuple(range(1,self.n*self.m+1)),self.m,self.n))
-        
-        #This method counts the number of corners you have to turn on the way from one node to the next
 
-        for i in range (self.m):
-            for j in range (self.n): 
-                k=grid1.state[i][j]
-                m2=(k-1)//self.n
-                n2=(k-1)%self.n
-                horizontal_moves = abs(m2 - i)
-                vertical_moves = abs(n2 - j) 
-                corners = min(horizontal_moves, vertical_moves) 
-        return corners 
-
-    
-#Chebychev heuristic consists in determining the greatest difference between coordinates (in absolute value), however it is  more effective when considering graphs in which diagonal moves are allowed so it is less efficient than the first heuristic
-def chebyshev_distance(self, ext_node, dst) : 
-    for i in range (self.m):
-            for j in range (self.n): 
-                k=grid1.state[i][j]
-                m2=(k-1)//self.n
-                n2=(k-1)%self.n
-                dx = abs(m2 - i)
-                dy = abs(n2 - j) 
-    return max(dx, dy)
         
  
                     
