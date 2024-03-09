@@ -296,6 +296,19 @@ class Grid():
                 vertical_moves = abs(n2 - j) 
                 corners = min(horizontal_moves, vertical_moves) 
         return corners 
+
+    
+#Chebychev heuristic consists in determining the greatest difference between coordinates (in absolute value), however it is  more effective when considering graphs in which diagonal moves are allowed so it is less efficient than the first heuristic
+def chebyshev_distance(self, ext_node, dst) : 
+    for i in range (self.m):
+            for j in range (self.n): 
+                k=grid1.state[i][j]
+                m2=(k-1)//self.n
+                n2=(k-1)%self.n
+                dx = abs(m2 - i)
+                dy = abs(n2 - j) 
+    return max(dx, dy)
+        
  
                     
     @staticmethod
